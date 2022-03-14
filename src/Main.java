@@ -127,10 +127,10 @@ public class Main {
                     int z = x * 11 + y;
                     joueura.ajoutePion(z);
                     plateau.setDispo(x, y, 'A');
-                    plateau.afficher();
+                    plateau.cliAfficher();
                 }
                 case 2 -> {
-                    plateau.afficher();
+                    plateau.cliAfficher();
                     System.out.println("---------------------------------------------------------");
                     System.out.println("Veuillez saisir les coordonnées x et y pour la première case");
                     x = saisie(saisieUtilisateur);
@@ -152,7 +152,7 @@ public class Main {
                     }
                 }
                 case 3 -> {
-                    plateau.afficher();
+                    plateau.cliAfficher();
                     System.out.println("---------------------------------------------------------");
                     System.out.println("Veuillez saisir les coordonnées x et y pour la première case");
                     x = saisie(saisieUtilisateur);
@@ -181,12 +181,12 @@ public class Main {
                     System.out.println("ExisteCheminCases ? " + res);
                 }
                 case 4 -> {
-                    plateau.afficher();
+                    plateau.cliAfficher();
                     res = joueura.existeCheminCotes2();
                     System.out.println("ExisteCheminCotes ? " + res);
                 }
                 case 5 -> {
-                    plateau.afficher();
+                    plateau.cliAfficher();
                     System.out.println("---------------------------------------------------------");
                     System.out.println("Veuillez saisir les coordonnées x et y pour la première case");
                     x = saisie(saisieUtilisateur);
@@ -207,7 +207,7 @@ public class Main {
                     }
                 }
                 case 6 -> {
-                    plateau.afficher();
+                    plateau.cliAfficher();
                     System.out.println("---------------------------------------------------------");
                     System.out.println("Veuillez saisir les coordonnées x et y pour la première case");
                     x1 = saisie(saisieUtilisateur);
@@ -450,7 +450,7 @@ public static int evaluerPionZ(Joueur ordi, Joueur joueur, Plateau plateau, int 
         joueurb.ajoutePion(pion);
         joueurb.existeCheminCotes();
         plateau.setDispo(pion/11,pion%11,'B');
-        plateau.afficher();
+        plateau.cliAfficher();
         while( !joueura.fini() && !joueurb.fini()) {
             System.out.println("---------------------------------------------------------" );
             System.out.println(joueura.getNom_()+", c'est à vous de jouer, veuillez saisir les coordonnées x et y ");
@@ -478,7 +478,7 @@ public static int evaluerPionZ(Joueur ordi, Joueur joueur, Plateau plateau, int 
 
             }
             System.out.println("---------------------------------------------------------");
-            plateau.afficher();
+            plateau.cliAfficher();
         }
         if(joueura.fini())
         {
@@ -491,7 +491,7 @@ public static int evaluerPionZ(Joueur ordi, Joueur joueur, Plateau plateau, int 
     public static void joueDeuxHumains(Joueur joueura, Joueur joueurb, Plateau plateau){
         System.out.print(String.format("\033[2J"));
         System.out.println("---------------------------------------------------------" );
-        plateau.afficher();
+        plateau.cliAfficher();
         while( !joueura.fini() && !joueurb.fini()) {
             System.out.println("---------------------------------------------------------" );
             System.out.println(joueura.getNom_()+", c'est à vous de jouer, veuillez saisir les coordonnées x et y ");
@@ -511,7 +511,7 @@ public static int evaluerPionZ(Joueur ordi, Joueur joueur, Plateau plateau, int 
             plateau.setDispo(x,y,'A');
             System.out.print(String.format("\033[2J"));
             System.out.println("---------------------------------------------------------" );
-            plateau.afficher();
+            plateau.cliAfficher();
             if( !joueura.fini() ) {
                 System.out.println("---------------------------------------------------------" );
                 System.out.println(joueurb.getNom_()+", c'est à vous de jouer, veuillez saisir les coordonnées x et y ");
@@ -529,7 +529,7 @@ public static int evaluerPionZ(Joueur ordi, Joueur joueur, Plateau plateau, int 
                 plateau.setDispo(x,y,'B');
                 System.out.print(String.format("\033[2J"));
                 System.out.println("---------------------------------------------------------" );
-                plateau.afficher();
+                plateau.cliAfficher();
             }
         }
         System.out.println("---------------------------------------------------------" );

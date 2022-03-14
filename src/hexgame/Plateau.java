@@ -1,6 +1,7 @@
 package hexgame;
 
 import java.util.*;
+import graphics.*;
 
 /**
  * Classe Plateau.
@@ -12,7 +13,7 @@ public class Plateau {
     /**
      * tableau à double entrée contenant les pions
      */
-    private char[][] plateau_;
+    private final char[][] plateau_;
 
     /**
      * Contructeur de la classe Plateau
@@ -56,29 +57,36 @@ public class Plateau {
     }
 
     /**
-     * Méthode qui affiche le plateau
+     * Méthode qui affiche le plateau en CLI
      */
-    public void afficher() {
+    public void cliAfficher() {
         int w;
         int j;
         int k;
         StringBuilder build = new StringBuilder();
         System.out.println("|0|1|2|3|4|5|6|7|8|9|10|");
-        for(int i =0; i<11;++i) {
+        for(int i=0; i<11; i++) {
             k=i;
             if(k==10)
                 --k;
-            for(w=0;w<k;++w)
+            for(w=0; w<k; w++)
                 build.append(" ");
-            build.append(i+"|");
-            for(j=0;j<11;++j) {
+            build.append(i).append("|");
+            for(j=0; j<11; j++) {
                 build.append(plateau_[i][j]);
                 build.append("|");
 
             }
             build.append("\n");
         }
-        System.out.println(build.toString());
+        System.out.println(build);
+    }
+
+    public void Afficher() {
+        int w;
+        int j;
+        int k;
+
     }
 
     /**
@@ -98,8 +106,8 @@ public class Plateau {
         int pion = 0;
         for(int q = 0;q<123;++q)
             marqueur[q]=false;
-        LinkedList<Integer> fileEnCours = new LinkedList<Integer>();
-        LinkedList<Integer> fileAvenir = new LinkedList<Integer>();
+        LinkedList<Integer> fileEnCours = new LinkedList<>();
+        LinkedList<Integer> fileAvenir = new LinkedList<>();
         fileEnCours.add(coordToCase(x1,y1));
         marqueur[x1*11+y1] = true;
         int i;
@@ -160,7 +168,7 @@ public class Plateau {
      * @return la liste des voisins
      */
     public ArrayList<Integer> voisin(int x, int y) {
-        ArrayList<Integer> v = new ArrayList<Integer>();
+        ArrayList<Integer> v = new ArrayList<>();
         int nouvellecoor;
         if (y!=0) {
             nouvellecoor = x * 11 + (y - 1);
