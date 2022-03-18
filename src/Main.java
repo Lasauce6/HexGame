@@ -1,6 +1,7 @@
 import hexgame.Joueur;
 import hexgame.Plateau;
 import java.util.*;
+import javax.swing.JOptionPane;
 
 import java.util.Scanner;
 
@@ -11,31 +12,44 @@ public class Main {
         Scanner saisieUtilisateur = new Scanner(System.in);
         System.out.print("\033[2J");
         while(!fin) {
-            System.out.println("---------------------------------------------------------");
-            System.out.println(" Veuillez saisir votre choix ?");
-            System.out.println("---------------------------------------------------------");
-            System.out.println(" 1 - Lancer une partie 1v1 ");
-            System.out.println(" 2 - Lancer une partie contre un ordinateur en mode Attaquant + Défensif ");
-            System.out.println(" 3 - Faire des tests ");
-            System.out.println(" 4 - Quitter le jeu ");
-            System.out.println("---------------------------------------------------------");
-            System.out.println("Choix : ");
-            choose = saisie(saisieUtilisateur);
-            System.out.println("---------------------------------------------------------");
+//            System.out.println("---------------------------------------------------------");
+//            System.out.println(" Veuillez saisir votre choix ?");
+//            System.out.println("---------------------------------------------------------");
+//            System.out.println(" 1 - Lancer une partie 1v1 ");
+//            System.out.println(" 2 - Lancer une partie contre un ordinateur en mode Attaquant + Défensif ");
+//            System.out.println(" 3 - Faire des tests ");
+//            System.out.println(" 4 - Quitter le jeu ");
+//            System.out.println("---------------------------------------------------------");
+//            System.out.println("Choix : ");
+//            choose = saisie(saisieUtilisateur);
+            choose = Integer.parseInt(JOptionPane.showInputDialog("""
+                    Veuillez saisir votre choix :
+                    1 - Lancer une partie 1v1
+                    2 - Lancer une partie contre un ordinateur en mode Attaquant + Défensif
+                    3 - Faire des tests
+                    4 - Quitter le jeu
+                    """));
+//            System.out.println("---------------------------------------------------------");
             while(choose<1||choose>4) {
 
-                System.out.print("\033[2J");
-                System.out.println("---------------------------------------------------------");
-                System.out.println(" Veuillez resaisir votre choix ?");
-                System.out.println("---------------------------------------------------------");
-                System.out.println(" 1 - Lancer une partie 1v1 ");
-                System.out.println(" 2 - Lancer une partie contre un ordinateur en mode Attaquant + Défensif ");
-                System.out.println(" 3 - Faire des tests ");
-                System.out.println(" 4 - Quitter le jeu ");
-                System.out.println("---------------------------------------------------------");
-                System.out.println("Choix : ");
-                choose = saisie(saisieUtilisateur);
-                System.out.println("---------------------------------------------------------");    
+//                System.out.print("\033[2J");
+//                System.out.println("---------------------------------------------------------");
+//                System.out.println(" Veuillez resaisir votre choix ?");
+//                System.out.println("---------------------------------------------------------");
+//                System.out.println(" 1 - Lancer une partie 1v1 ");
+//                System.out.println(" 2 - Lancer une partie contre un ordinateur en mode Attaquant + Défensif ");
+//                System.out.println(" 3 - Faire des tests ");
+//                System.out.println(" 4 - Quitter le jeu ");
+//                System.out.println("---------------------------------------------------------");
+//                System.out.println("Choix : ");
+//                choose = saisie(saisieUtilisateur);
+                choose = Integer.parseInt(JOptionPane.showInputDialog("""
+                        Veuillez saisir un choix valide :
+                        1 - Lancer une partie de 1v1
+                        2 - Lancer une partie contre un ordinateur en mode Attaquant + Défensif
+                        3 - Faire des tests
+                        4 - Quitter le jeu"""));
+//                System.out.println("---------------------------------------------------------");
             }
             switch (choose) {
                 case 1 -> {
@@ -45,8 +59,10 @@ public class Main {
                     String nom1, nom2;
                     System.out.println(" Saisir les prénoms des deux joueurs");
                     System.out.println("---------------------------------------------------------");
-                    nom1 = saisie2(saisieUtilisateur);
-                    nom2 = saisie2(saisieUtilisateur);
+//                    nom1 = saisie2(saisieUtilisateur);
+                    nom1 = JOptionPane.showInputDialog("Entrer le nom du premier joueur");
+//                    nom2 = saisie2(saisieUtilisateur);
+                    nom2 = JOptionPane.showInputDialog("Entrer le nom du deuxième joueur");
                     joueura.setnom(nom1);
                     joueurb.setnom(nom2);
                     System.out.println("---------------------------------------------------------");
@@ -62,7 +78,8 @@ public class Main {
                     String nom;
                     System.out.println(" Saisir le prénom du joueur");
                     System.out.println("---------------------------------------------------------");
-                    nom = saisie2(saisieUtilisateur);
+//                    nom = saisie2(saisieUtilisateur);
+                    nom = JOptionPane.showInputDialog("Entrer le nom du joueur");
                     joueura2.setnom(nom);
                     System.out.print("\033[2J");
                     System.out.println("---------------------------------------------------------");
@@ -107,7 +124,8 @@ public class Main {
                 System.out.println(" 7 - Stopper les tests");
                 System.out.println("---------------------------------------------------------");
                 System.out.println("Choix : ");
-                choose = saisie(saisieUtilisateur);
+//                choose = saisie(saisieUtilisateur);
+                choose = Integer.parseInt(JOptionPane.showInputDialog(""));
                 System.out.println("---------------------------------------------------------");
             }while(choose<0||choose>8);
 
@@ -115,14 +133,18 @@ public class Main {
                 case 1 -> {
                     System.out.println("---------------------------------------------------------");
                     System.out.println("Veuillez saisir les coordonnées x et y ");
-                    x = saisie(saisieUtilisateur);
-                    y = saisie(saisieUtilisateur);
+//                    x = saisie(saisieUtilisateur);
+                    x = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de x"));
+//                    y = saisie(saisieUtilisateur);
+                    y = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de y"));
                     System.out.println("---------------------------------------------------------");
                     while (!verificationCoordonnees(x, y) || !(plateau.estDispo(x, y) == 'o')) {
                         System.out.println("---------------------------------------------------------");
                         System.out.println("La case n'est pas disponible veuillez redonner des coordonnées !!!");
-                        x = saisie(saisieUtilisateur);
-                        y = saisie(saisieUtilisateur);
+//                        x = saisie(saisieUtilisateur);
+                        x = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de x"));
+//                        y = saisie(saisieUtilisateur);
+                        y = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de y"));
                     }
                     int z = x * 11 + y;
                     joueura.ajoutePion(z);
@@ -133,14 +155,18 @@ public class Main {
                     plateau.cliAfficher();
                     System.out.println("---------------------------------------------------------");
                     System.out.println("Veuillez saisir les coordonnées x et y pour la première case");
-                    x = saisie(saisieUtilisateur);
-                    y = saisie(saisieUtilisateur);
+//                    x = saisie(saisieUtilisateur);
+                    x = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de x"));
+//                    y = saisie(saisieUtilisateur);
+                    y = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de y"));
                     System.out.println("---------------------------------------------------------");
                     while (!verificationCoordonnees(x, y)) {
                         System.out.println("---------------------------------------------------------");
                         System.out.println("La case n'est pas disponible veuillez redonner des coordonnées !!!");
-                        x = saisie(saisieUtilisateur);
-                        y = saisie(saisieUtilisateur);
+//                        x = saisie(saisieUtilisateur);
+                        x = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de x"));
+//                        y = saisie(saisieUtilisateur);
+                        y = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de y"));
                     }
                     c1 = x * 11 + y;
                     composante = joueura.getClasseUnion().afficheComposante(c1);
@@ -155,26 +181,34 @@ public class Main {
                     plateau.cliAfficher();
                     System.out.println("---------------------------------------------------------");
                     System.out.println("Veuillez saisir les coordonnées x et y pour la première case");
-                    x = saisie(saisieUtilisateur);
-                    y = saisie(saisieUtilisateur);
+//                    x = saisie(saisieUtilisateur);
+                    x = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de x"));
+//                    y = saisie(saisieUtilisateur);
+                    y = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de y"));
                     System.out.println("---------------------------------------------------------");
                     while (!verificationCoordonnees(x, y)) {
                         System.out.println("---------------------------------------------------------");
                         System.out.println("La case n'est pas disponible veuillez redonner des coordonnées !!!");
-                        x = saisie(saisieUtilisateur);
-                        y = saisie(saisieUtilisateur);
+//                        x = saisie(saisieUtilisateur);
+                        x = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de x"));
+//                        y = saisie(saisieUtilisateur);
+                        y = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de y"));
                     }
                     c1 = x * 11 + y;
                     System.out.println("---------------------------------------------------------");
                     System.out.println("Veuillez saisir les coordonnées x et y pour la seconde case");
-                    x = saisie(saisieUtilisateur);
-                    y = saisie(saisieUtilisateur);
+//                    x = saisie(saisieUtilisateur);
+                    x = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de x"));
+//                    y = saisie(saisieUtilisateur);
+                    y = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de y"));
                     System.out.println("---------------------------------------------------------");
                     while (!verificationCoordonnees(x, y)) {
                         System.out.println("---------------------------------------------------------");
                         System.out.println("La case n'est pas disponible veuillez redonner des coordonnées !!!");
-                        x = saisie(saisieUtilisateur);
-                        y = saisie(saisieUtilisateur);
+//                        x = saisie(saisieUtilisateur);
+                        x = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de x"));
+//                        y = saisie(saisieUtilisateur);
+                        y = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de y"));
                     }
                     c2 = x * 11 + y;
                     res = joueura.existeCheminCase(c1, c2);
@@ -189,14 +223,18 @@ public class Main {
                     plateau.cliAfficher();
                     System.out.println("---------------------------------------------------------");
                     System.out.println("Veuillez saisir les coordonnées x et y pour la première case");
-                    x = saisie(saisieUtilisateur);
-                    y = saisie(saisieUtilisateur);
+//                    x = saisie(saisieUtilisateur);
+                    x = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de x"));
+//                    y = saisie(saisieUtilisateur);
+                    y = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de y"));
                     System.out.println("---------------------------------------------------------");
                     while (!verificationCoordonnees(x, y)) {
                         System.out.println("---------------------------------------------------------");
                         System.out.println("La case n'est pas disponible veuillez redonner des coordonnées !!!");
-                        x = saisie(saisieUtilisateur);
-                        y = saisie(saisieUtilisateur);
+//                        x = saisie(saisieUtilisateur);
+                        x = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de x"));
+//                        y = saisie(saisieUtilisateur);
+                        y = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de y"));
                     }
                     c1 = x * 11 + y;
                     res = joueura.getClasseUnion().relieComposantes(c1);
@@ -210,25 +248,33 @@ public class Main {
                     plateau.cliAfficher();
                     System.out.println("---------------------------------------------------------");
                     System.out.println("Veuillez saisir les coordonnées x et y pour la première case");
-                    x1 = saisie(saisieUtilisateur);
-                    y1 = saisie(saisieUtilisateur);
+//                    x1 = saisie(saisieUtilisateur);
+                    x1 = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de x"));
+//                    y1 = saisie(saisieUtilisateur);
+                    y1 = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de y"));
                     System.out.println("---------------------------------------------------------");
                     while (!verificationCoordonnees(x1, y1)) {
                         System.out.println("---------------------------------------------------------");
                         System.out.println("La case n'est pas disponible veuillez redonner des coordonnées !!!");
-                        x1 = saisie(saisieUtilisateur);
-                        y1 = saisie(saisieUtilisateur);
+//                        x1 = saisie(saisieUtilisateur);
+                        x1 = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de x"));
+//                        y1 = saisie(saisieUtilisateur);
+                        y1 = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de y"));
                     }
                     System.out.println("---------------------------------------------------------");
                     System.out.println("Veuillez saisir les coordonnées x et y pour la seconde case");
-                    x2 = saisie(saisieUtilisateur);
-                    y2 = saisie(saisieUtilisateur);
+//                    x2 = saisie(saisieUtilisateur);
+                    x2 = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de x"));
+//                    y2 = saisie(saisieUtilisateur);
+                    y2 = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de y"));
                     System.out.println("---------------------------------------------------------");
                     while (!verificationCoordonnees(x2, y2)) {
                         System.out.println("---------------------------------------------------------");
                         System.out.println("La case n'est pas disponible veuillez redonner des coordonnées !!!");
-                        x2 = saisie(saisieUtilisateur);
-                        y2 = saisie(saisieUtilisateur);
+//                        x2 = saisie(saisieUtilisateur);
+                        x2 = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de x"));
+//                        y2 = saisie(saisieUtilisateur);
+                        y2 = Integer.parseInt(JOptionPane.showInputDialog("Entrer la valeur de y"));
                     }
                     res2 = plateau.calculDistance(x1, y1, x2, y2, 'A', joueura);
                     System.out.println("Longueur entre " + x1 + " " + y1 + " et " + x2 + " " + y2 + " est de : " + res2 + ".");
