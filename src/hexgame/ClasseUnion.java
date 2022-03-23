@@ -3,7 +3,6 @@ package hexgame;
 import java.util.ArrayList;
 /**
  * Structure Classe-Union
- * @author François Hallereau &amp; Sullivan Pineau
  */
 public class ClasseUnion {
     /**

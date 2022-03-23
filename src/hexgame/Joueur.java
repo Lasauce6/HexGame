@@ -2,7 +2,6 @@ package hexgame;
 
 /**
  * Classe Joueur
- * @author François Hallereau &amp; Sullivan Pineau
  */
 public class Joueur {
 
@@ -31,9 +30,9 @@ public class Joueur {
      * @param nom le nom du joueur
      * @param direction la direction du joueur
      */
-    public Joueur(String nom, boolean direction){
+    public Joueur(String nom, boolean direction) {
         nom_ = nom;
-        direction_=direction; // true vertical
+        direction_ = direction; // true vertical
 		fini_ = false;
 		ClasseUnion_ = new ClasseUnion();
     }
@@ -88,26 +87,6 @@ public class Joueur {
      */
     public void existeCheminCotes(){
         fini_ = ClasseUnion_.existeCheminCotes();
-    }
-
-    /**
-     * stocke dans l'attribut fini si il existe un chemin entre les deux extrémités du plateau
-     * @return vrai si un chemin existe faux sinon
-     * @see ClasseUnion#existeCheminCotes()
-     */
-    public boolean existeCheminCotes2(){
-        return ClasseUnion_.existeCheminCotes();
-    }
-
-    /**
-     * Teste si il existe un chemin entre deux cases
-     * @param c1 le numéro de la case
-     * @param c2 le numéro de l'autre case
-     * @return vrai si un chemin existe faux sinon
-     * @see ClasseUnion#existeCheminCases(int, int)
-     */
-    public boolean existeCheminCase(int c1,int c2){
-        return ClasseUnion_.existeCheminCases(c1,c2);
     }
 
     /**

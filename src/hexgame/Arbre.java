@@ -3,7 +3,6 @@ package hexgame;
 /**
  * Classe Arbre.
  * Représente la structure d'un arbre.
- * @author François Hallereau &amp; Sullivan Pineau
  */
 public class Arbre {
     /**
@@ -21,7 +20,7 @@ public class Arbre {
      * @param pere le pere de l'arbre
      * @param elt l'élément de l'arbre
      */
-    public Arbre(Arbre pere, int elt){
+    public Arbre(Arbre pere, int elt) {
         elt_ = elt;
         pere_ = pere;
     }

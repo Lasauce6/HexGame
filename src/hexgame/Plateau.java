@@ -6,7 +6,6 @@ import graphics.*;
 /**
  * Classe Plateau.
  * Défini le plateau de jeu sur lequel repose les pions
- * @author François Hallereau &amp; Sullivan Pineau
  */
 public class Plateau {
 
@@ -18,10 +17,10 @@ public class Plateau {
     /**
      * Contructeur de la classe Plateau
      */
-    public Plateau(){
+    public Plateau() {
         plateau_ = new char[11][11];
-        for(int i = 0;i<11;++i) {
-            for(int j= 0;j<11;++j) {
+        for(int i = 0; i<11; ++i) {
+            for(int j= 0; j<11; ++j) {
                 plateau_[i][j] = 'o';
             }
         }
@@ -104,26 +103,26 @@ public class Plateau {
         boolean[] marqueur = new boolean[123];
         boolean trouve = false;
         int pion = 0;
-        for(int q = 0;q<123;++q)
+        for(int q = 0; q < 123; ++q)
             marqueur[q]=false;
         LinkedList<Integer> fileEnCours = new LinkedList<>();
         LinkedList<Integer> fileAvenir = new LinkedList<>();
-        fileEnCours.add(coordToCase(x1,y1));
-        marqueur[x1*11+y1] = true;
+        fileEnCours.add(coordToCase(x1, y1));
+        marqueur[x1 * 11 + y1] = true;
         int i;
         int s;
        do {
             while(!fileEnCours.isEmpty()&&!trouve) {
                 s = fileEnCours.poll();
                 for( int v : voisin(s /11,s%11)) {//pour tout les voisins d'une case
-                    if(v<122 && (!marqueur[v] && (plateau_[v/11][v%11]=='o'||plateau_[v/11][v%11]==nom )) ) {//il n'a pas déjà été visité
-                        if(plateau_[v/11][v%11]==nom) {
+                    if(v < 122 && (!marqueur[v] && (plateau_[v/11][v%11] == 'o'|| plateau_[v/11][v%11] == nom ))) {//il n'a pas déjà été visité
+                        if(plateau_[v/11][v%11] == nom) {
                             fileEnCours.add(v);
                         } else {
                             fileAvenir.add(v);
                         }
                         marqueur[v] = true;
-                        if(v==x2*11+y2) {//on vérifie qu'il appartient à la composante d'arrivée
+                        if(v == x2*11+y2) {//on vérifie qu'il appartient à la composante d'arrivée
                             trouve = true;//c'est le cas donc on a trouvé le plus court chemin
                         }
                     }
@@ -134,26 +133,26 @@ public class Plateau {
                 fileAvenir.clear();
                 pion++;
            }
-        } while( !fileEnCours.isEmpty() && !trouve);
+        } while(!fileEnCours.isEmpty() && !trouve);
 
         if(j.getClasseUnion().existeCheminCases(x1 * 11 + y1, x2 * 11+y2))
-            pion=0;
+            pion = 0;
         // Regarde si la case départ != nom
-        if(plateau_[x1][y1]!=nom) {
+        if(plateau_[x1][y1] != nom) {
             pion++;
         }
         // Regarde si la case arrive != nom
-        if(plateau_[x2][y2]!=nom) {
+        if(plateau_[x2][y2] != nom) {
             pion++;
         }
         // Regarde si la case départ != nom & que la case deb = case fin
-        if((x1==x2)&&(y1==y2)&&plateau_[x2][y2]!=nom)
-            pion=1;
+        if((x1==x2)&&(y1==y2)&&plateau_[x2][y2] != nom)
+            pion = 1;
 
         // Regarde si la case départ == nom & que la case deb = case fin
 
-        if((x1==x2)&&(y1==y2)&&plateau_[x2][y2]==nom)
-            pion=0;
+        if((x1 == x2) && (y1 == y2) && plateau_[x2][y2] == nom)
+            pion = 0;
 
         if(!trouve) {
             pion = Integer.MAX_VALUE;
@@ -170,27 +169,27 @@ public class Plateau {
     public ArrayList<Integer> voisin(int x, int y) {
         ArrayList<Integer> v = new ArrayList<>();
         int nouvellecoor;
-        if (y!=0) {
+        if (y != 0) {
             nouvellecoor = x * 11 + (y - 1);
             v.add(nouvellecoor);
         }
-        if(y!=10){
+        if(y != 10) {
             nouvellecoor = x * 11 + (y + 1);
             v.add(nouvellecoor);
         }
-        if(y!=10&&x!=0){
+        if(y != 10 && x != 0) {
             nouvellecoor = (x-1) * 11 + (y + 1);
             v.add(nouvellecoor);
         }
-        if(y!=0&&x!=10){
+        if(y != 0 && x != 10) {
             nouvellecoor = (x+1) * 11 + (y - 1);
             v.add(nouvellecoor);
         }
-        if(x!=0){
+        if(x != 0) {
             nouvellecoor = (x-1)* 11 + y;
             v.add(nouvellecoor);
         }
-        if(x!=10){
+        if(x != 10) {
             nouvellecoor = (x+1) * 11 + y;
             v.add(nouvellecoor);
         }
@@ -203,7 +202,7 @@ public class Plateau {
      * @param y indice de la colonne
      * @return le numéro de la case
      */
-    public int coordToCase(int x,int y){
-        return x*11+y;
+    public int coordToCase(int x, int y){
+        return x * 11 + y;
     }
 }
