@@ -82,9 +82,6 @@ public class Plateau {
     }
 
     public void Afficher() {
-        int w;
-        int j;
-        int k;
 
     }
 

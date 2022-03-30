@@ -121,8 +121,7 @@ public class Line implements Shape
     /**
      * Shows this line on the canvas.
      */
-    public void draw()
-    {
+    public void draw() {
         Canvas.getInstance().show(this);
     }
 
