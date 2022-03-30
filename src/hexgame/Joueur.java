@@ -13,7 +13,7 @@ public class Joueur {
     /**
      * la classe union du joueur
      */
-    private ClasseUnion ClasseUnion_;
+    private final ClasseUnion ClasseUnion_;
 
     /**
      * la condition de victoire du joueur
@@ -23,7 +23,7 @@ public class Joueur {
     /**
      * vrai si le joueur doit faire un chemin vertical, faux sinon
      */
-    private boolean direction_;
+    private final boolean direction_;
 
     /**
      * constructeur de la classe joueur

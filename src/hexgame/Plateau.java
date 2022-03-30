@@ -1,7 +1,6 @@
 package hexgame;
 
 import java.util.*;
-import graphics.*;
 
 /**
  * Classe Plateau.
@@ -106,7 +105,6 @@ public class Plateau {
         LinkedList<Integer> fileAvenir = new LinkedList<>();
         fileEnCours.add(coordToCase(x1, y1));
         marqueur[x1 * 11 + y1] = true;
-        int i;
         int s;
        do {
             while(!fileEnCours.isEmpty()&&!trouve) {

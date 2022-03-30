@@ -13,7 +13,7 @@ public class Arbre {
     /**
      * l'élément stocké
      */
-    private int elt_;
+    private final int elt_;
 
     /**
      * Constructeur de la classe hexgame.Arbre

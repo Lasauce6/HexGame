@@ -4,13 +4,6 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 
-/**********************************
- This is the main class of a Java program to play a game based on hexagonal tiles.
- The mechanism of handling hexes is in the file hexmech.java.
- Written by: M.H.
- Date: December 2012
- ***********************************/
-
 public class hexgame {
     private hexgame() {
         initGame();
@@ -38,7 +31,6 @@ public class hexgame {
     int[][] board = new int[BSIZE][BSIZE];
 
     void initGame() {
-
         hexmech.setHeight(HEXSIZE);
         hexmech.setBorders(BORDERS);
 
@@ -98,24 +90,16 @@ public class hexgame {
                 for (int j = 0; j < BSIZE; j++) {
                     hexmech.fillHex(i * spacing + j * (spacing / 2), j * (spacing - 7), board[i][j], g2);
                 }
-
             }
 
-//            //fill in hexes
-//            for (int i=0; i<BSIZE; i++) {
-//                for (int j=0; j<BSIZE; j++) {
-//                    hexmech.fillHex(i, j, board[i][j], g2);
-//                }
-//            }
 
         }
 
-        class MyMouseListener extends MouseAdapter {	//inner class inside DrawingPanel
+        class MyMouseListener extends MouseAdapter {
             public void mouseClicked(MouseEvent e) {
                 Point p = new Point(hexmech.pxToHex(e.getX(), e.getY()));
                 if (p.x < 0 || p.y < 0 || p.x >= BSIZE || p.y >= BSIZE) return;
 
-                //What do you want to do when a hexagon is clicked?
                 board[p.x][p.y] = 'X';
                 repaint();
             }

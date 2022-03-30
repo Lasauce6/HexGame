@@ -16,7 +16,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class Channel {
     private final String channel_name;
-    private Queue<byte[]> events = new ArrayDeque<>();
+    private final Queue<byte[]> events = new ArrayDeque<>();
     private int id = 0;
     private static final String addr = "https://prog-reseau-m1.lacl.fr/padiflac/";
     private static final String nonce =
@@ -25,7 +25,7 @@ public class Channel {
 
     private String genNonce() {
         char[] sb = new char[64];
-        for(int i=0; i<64;i++) {
+        for(int i=0; i < 64; i++) {
             sb[i] = nonce.charAt(r.nextInt(62));
         }
         return new String(sb);
@@ -41,19 +41,19 @@ public class Channel {
 
     private void parseEvent(byte[] bb, int i) {
         StringBuilder sb = new StringBuilder();
-        while(i<bb.length) {
+        while(i < bb.length) {
             byte b = bb[i];
-            if(b=='|')break;
+            if(b == '|') break;
             sb.append((char)b);
             i++;
         }
         i++;
-        if(i<bb.length) {
+        if(i < bb.length) {
             int size = Integer.parseInt(sb.toString());
-            byte[] buff = java.util.Arrays.copyOfRange(bb, i, i+size);
+            byte[] buff = java.util.Arrays.copyOfRange(bb, i, i + size);
             events.add(buff );
-            parseEvent(bb, i+size);
-        }else {
+            parseEvent(bb, i + size);
+        } else {
             id =Integer.parseInt(sb.toString());
         }
 
@@ -89,7 +89,7 @@ public class Channel {
     public void send(String s)  {
         try {
             String non = genNonce();
-            URL u = new URL(addr+channel_name+"?nonce="+non);
+            URL u = new URL(addr + channel_name + "?nonce=" + non);
             HttpsURLConnection uc = (HttpsURLConnection)u.openConnection();
             uc.setRequestMethod("POST");
             uc.setDoOutput(true);
@@ -104,7 +104,7 @@ public class Channel {
         }
     }
 
-
+    /**
     public static void test() {
         Channel c = new Channel("PippoTest");
         c.connect();
@@ -121,4 +121,5 @@ public class Channel {
             if(flag) System.out.println(s);
         }
     }
+    */
 }
