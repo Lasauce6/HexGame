@@ -1,5 +1,7 @@
+import hexgame.Board;
 import hexgame.Joueur;
 import hexgame.Plateau;
+import hexgame.graphics.Client;
 
 import java.awt.*;
 import java.util.*;
@@ -13,7 +15,7 @@ public class Main {
     public static void main(String [] args) {
         boolean fin=false;
         int choose;
-        String[] options = {"1v1", "Vs ordi", "Quitter"};
+        String[] options = {"1v1", "Vs ordi", "TEST", "Quitter"};
         while(!fin) {
             choose = JOptionPane.showOptionDialog(null,
                     "Veuillez saisir votre choix",
@@ -22,7 +24,7 @@ public class Main {
                     JOptionPane.QUESTION_MESSAGE,
                     null,
                     options,
-                    options[2]
+                    options[3]
                     );
             switch (choose) {
                 case 0 -> {
@@ -44,9 +46,20 @@ public class Main {
                     joueura2.setnom(nom);
                     joueOrdiHumain(joueura2, plateau2);
                 }
-                case 2 -> fin = true;
+                case 2 -> {
+                    start();
+                    fin = true;
+                }
+                case 3 -> fin = true;
             }
         }
+    }
+
+    public static void start() {
+        Board board = new Board();
+        Client client = new Client(board);
+        int turn = 0;
+        client.repaint();
     }
 
     /**

@@ -1,5 +1,7 @@
 package org.hexgame;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
@@ -25,14 +27,15 @@ public class hexgame {
     final static int EMPTY = 0;
     final static int BSIZE = 11; //board size.
     final static int HEXSIZE = 50;	//hex size in pixels
-    final static int BORDERS = 50;
+    final static int BORDERX = 50;
+    final static int BORDERY = 100;
     final static int SCRSIZE = HEXSIZE * (BSIZE + 1); //screen size (vertical dimension).
 
     int[][] board = new int[BSIZE][BSIZE];
 
     void initGame() {
         hexmech.setHeight(HEXSIZE);
-        hexmech.setBorders(BORDERS);
+        hexmech.setBorders(BORDERX, BORDERY);
 
         for (int i=0; i<BSIZE; i++) {
             for (int j=0; j<BSIZE; j++) {
@@ -42,7 +45,6 @@ public class hexgame {
 
         //set up board here
         board[0][0] = 'A';
-        board[4][3] = 'Q';
         board[4][4] = -(int)'B';
     }
 
@@ -73,11 +75,13 @@ public class hexgame {
             addMouseListener(ml);
         }
 
-        public void paintComponent(Graphics g) {
+        public void paintComponent(@NotNull Graphics g) {
             Graphics2D g2 = (Graphics2D)g;
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
             super.paintComponent(g2);
+
+            hexmech.drawBoard(g2);
             //draw grid
             int spacing = HEXSIZE - 7;
             for (int i = 0; i < BSIZE; i++) {
@@ -96,11 +100,11 @@ public class hexgame {
         }
 
         class MyMouseListener extends MouseAdapter {
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(@NotNull MouseEvent e) {
                 Point p = new Point(hexmech.pxToHex(e.getX(), e.getY()));
                 if (p.x < 0 || p.y < 0 || p.x >= BSIZE || p.y >= BSIZE) return;
 
-                board[p.x][p.y] = 'X';
+                board[p.x][p.y] = 'A';
                 repaint();
             }
         } //end of MyMouseListener class

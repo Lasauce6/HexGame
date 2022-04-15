@@ -7,22 +7,22 @@ import java.util.Objects;
  */
 public class ClasseUnion {
     /**
-     * le tableau des classes
+     * Le tableau des classes
      */
     private final Arbre[] classes_;
 
     /**
-     * valeur fixe dans le cas où le joueur n'a pas posé de pion sur cette case
+     * Valeur fixe dans le cas où le joueur n'a pas posé de pion sur cette case
      */
     private static final Arbre NON_ATTRIBUE = null;
 
     /**
-     * valeur de la classe qui correspond à l'une des extrémités du plateau de jeu
+     * Valeur de la classe qui correspond à l'une des extrémités du plateau de jeu
      */
     private static final int EXTREME1 = 121;
 
     /**
-     * valeur de la classe qui correspond à l'autre extrémité du plateau de jeu
+     * Valeur de la classe qui correspond à l'autre extrémité du plateau de jeu
      */
     private static final int EXTREME2 = 122;
 
@@ -39,7 +39,7 @@ public class ClasseUnion {
     }
 
     /**
-     * réalise l'ensemble des unions entre le pion qui vient d'être posé et les pions adjacents à celui-ci
+     * Réalise l'ensemble des unions entre le pion qui vient d'être posé et les pions adjacents à celui-ci
      * @param c1 le pion posé
      */
     public void unionAdjacentes(int c1){
@@ -105,7 +105,7 @@ public class ClasseUnion {
     }
 
     /**
-     * union entre deux pions
+     * Union entre deux pions
      * @param c1 pion 1
      * @param c2 pion 2
      */
@@ -118,7 +118,7 @@ public class ClasseUnion {
     }
 
     /**
-     * retourne la classe d'un pion
+     * Retourne la classe d'un pion
      * @param c le pion
      * @return la classe de ce pion
      */
@@ -136,15 +136,15 @@ public class ClasseUnion {
     }
 
     /**
-     * teste s’il y a un chemin entre les deux extrémités du plateau de jeu
+     * Teste s’il y a un chemin entre les deux extrémités du plateau de jeu
      * @return vrai si un chemin existe sinon faux
      */
-    public boolean existeCheminCotes(){
+    public boolean existeCheminCotes() {
         return Objects.equals(classe(EXTREME1), classe(EXTREME2));
     }
 
     /**
-     * teste si il existe un chemin entre 2 cases
+     * Teste s'il existe un chemin entre 2 cases
      * @param c1 une case
      * @param c2 l'autre case
      * @return vrai si il y a un chemin, faux sinon

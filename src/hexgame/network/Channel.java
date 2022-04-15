@@ -1,4 +1,4 @@
-package network;
+package hexgame.network;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -6,8 +6,6 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayDeque;
-import java.util.Date;
-import java.util.Objects;
 import java.util.Queue;
 import java.util.Random;
 
