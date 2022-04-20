@@ -11,7 +11,6 @@ import java.util.Random;
 
 import javax.net.ssl.HttpsURLConnection;
 
-
 public class Channel {
     private final String channel_name;
     private final Queue<byte[]> events = new ArrayDeque<>();

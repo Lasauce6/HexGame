@@ -40,6 +40,10 @@ public class Main {
         return gameEnd(board, client);
     }
 
+    /**
+     * Lance une partie de 1v1
+     * @return false si le joueur veut continuer de jouer true s'il veut quitter
+     */
     private boolean play1V1() throws InterruptedException {
         Board board = new Board();
         Client client = new Client(board);
@@ -48,6 +52,13 @@ public class Main {
         return gameEnd(board, client);
     }
 
+    /**
+     * Méthode appelée à la fin de chaque partie pour vérifier qui est le vainqueur
+     * et pour demander s'il on veut continuer de jouer
+     * @param board le plateau
+     * @param client le client
+     * @return false si le joueur veut continuer de jouer true s'il veut quitter
+     */
     private boolean gameEnd(Board board, Client client) throws InterruptedException {
         while (board.win() == 0) {
             synchronized (this) {
@@ -69,6 +80,10 @@ public class Main {
         return (choose == 1);
     }
 
+    /**
+     * Lance une partie contre l'IA
+     * @return false si le joueur veut continuer de jouer true s'il veut quitter
+     */
     private boolean playVsAI() {
         Board board = new Board();
         new Client(board);

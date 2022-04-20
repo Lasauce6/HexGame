@@ -1,28 +1,18 @@
 package hexgame;
 
+/**
+ * Définie une cellule
+ * @param r la ligne de la cellule
+ * @param c la colonne de la cellule
+ * @param player le joueur dans cette cellule (0 si aucun)
+ */
 public record Cell(int r, int c, int player) {
-
+    /**
+     * Constructeur sans définir de joueur
+     * @param r la ligne de la cellule
+     * @param c la colonne de la cellule
+     */
     public Cell(int r, int c) {
         this(r, c, 0);
-    }
-
-    public int getR() {
-        return r;
-    }
-
-    public int getC() {
-        return c;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Cell cell = (Cell) o;
-
-        if (r != cell.r) return false;
-        return c == cell.c;
-
     }
 }

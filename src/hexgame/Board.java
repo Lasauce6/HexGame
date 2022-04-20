@@ -3,14 +3,21 @@ package hexgame;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
+/**
+ * Défini le plateau de jeu
+ */
 public class Board {
-    private static final int size = 11;
-    public int[][] board;
-    public int numberOfMoves;
-    public Cell[][] cellBoard = new Cell[size][size];
+    private static final int size = 11; // Taille du plateau
+    public int[][] board; // Plateau -1 pour bleu 1 pour rouge et 0 pour une case vide
+    public int numberOfMoves; // Nombre de mouvements faits
+    public Cell[][] cellBoard = new Cell[size][size]; // Plateau rempli de cellules
 
+    /**
+     * Initialisation de la classe Board
+     * @param board tableau
+     * @param numberOfMoves nombre de mouvements
+     */
     public Board(int[][] board, int numberOfMoves) {
         this.board = board;
         this.numberOfMoves = numberOfMoves;
@@ -21,47 +28,43 @@ public class Board {
         }
     }
 
+    /**
+     * Initialisation de la classe Board
+     */
     public Board() {
         this(new int[size][size], 0);
     }
 
+    /**
+     * @return la taille du plateau
+     */
     public int getSize() {
         return size;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Board board1 = (Board) o;
-
-        if (numberOfMoves != board1.numberOfMoves) return false;
-        return Arrays.deepEquals(board, board1.board);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Arrays.deepHashCode(board);
-        result = 31 * result + numberOfMoves;
-        return result;
-    }
-
-
+    /**
+     * Effectue un tour et remplis board et cellBoard
+     * @param cell la cellule jouée
+     */
     public void move(Cell cell) {
         numberOfMoves++;
         if (cell != null) {
-            board[cell.getR()][cell.getC()] = cell.player();
-            cellBoard[cell.getR()][cell.getC()] = cell;
+            board[cell.r()][cell.c()] = cell.player();
+            cellBoard[cell.r()][cell.c()] = cell;
         }
     }
 
+    /**
+     * Donne une liste de cellules adjacentes a la cellule indiquée
+     * @param cell la cellule initiale
+     * @return la liste des cellules adjacentes
+     */
     public ArrayList<Cell> getAdjacents(@NotNull Cell cell) {
         ArrayList<Cell> result = new ArrayList<>();
-        for (int r = cell.getR() - 1; r <= cell.getR() + 1; r++) if (r >= 0 && r < size) {
-            int min = (r <= cell.getR() ?- 1 : 0);
-            int max = (r <= cell.getR() ?+ 1 : 0);
-            for (int c = cell.getC() + min; c <= cell.getC() + max; c++) {
+        for (int r = cell.r() - 1; r <= cell.r() + 1; r++) if (r >= 0 && r < size) {
+            int min = (r <= cell.r() ?- 1 : 0);
+            int max = (r <= cell.r() ?+ 1 : 0);
+            for (int c = cell.c() + min; c <= cell.c() + max; c++) {
                 if (c >= 0 && c < size) {
                     if (!new Cell(r, c, cell.player()).equals(cell)) {
                         result.add(cellBoard[r][c]);
@@ -72,6 +75,10 @@ public class Board {
         return result;
     }
 
+    /**
+     * Vérifie si une personne a gagné.
+     * @return le numéro de la personne gagnante
+     */
     public int win() {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -81,6 +88,14 @@ public class Board {
         }
         return 0;
     }
+
+    /**
+     * Vérifie s'il existe un chemin entre deux cellules
+     * @param start la cellule de début
+     * @param end la cellule de fin
+     * @param visited la liste des cellules déjà visitées pour l'appel récursif
+     * @return vrai ou faux si le chemin est possible
+     */
     public boolean path(Cell start, Cell end, @NotNull ArrayList<Cell> visited) {
         if(start.equals(end)) {
             return true;
@@ -96,26 +111,4 @@ public class Board {
         }
         return false;
     }
-
-
 }
-
-    /*
-    https://www.redblobgames.com/grids/hexagons/#range-obstacles
-    function hex_reachable(start, movement):
-    var visited = set() # set of hexes
-    add start to visited
-    var fringes = [] # array of arrays of hexes
-    fringes.append([start])
-
-    for each 1 < k ≤ movement:
-        fringes.append([])
-        for each hex in fringes[k-1]:
-            for each 0 ≤ dir < 6:
-                var neighbor = hex_neighbor(hex, dir)
-                if neighbor not in visited and not blocked:
-                    add neighbor to visited
-                    fringes[k].append(neighbor)
-
-    return visited
-     */
