@@ -1,8 +1,6 @@
 package hexgame;
 
-
 public record Cell(int r, int c) {
-
     public int getR() {
         return r;
     }

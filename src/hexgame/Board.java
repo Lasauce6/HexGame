@@ -1,15 +1,13 @@
 package hexgame;
 
-
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-
 public class Board {
     private static final int size = 11;
-    public final int[][] board;
+    public int[][] board;
     public int numberOfMoves;
 
     public Board(int[][] board, int numberOfMoves) {
@@ -19,14 +17,6 @@ public class Board {
 
     public Board() {
         this(new int[size][size], 0);
-    }
-
-    public Board(Board board) {
-        this.board = new int[size][size];
-        for (int i = 0; i < size; i++) {
-            System.arraycopy(board.board[i], 0, this.board[i], 0, size);
-        }
-        this.numberOfMoves = board.numberOfMoves;
     }
 
     public int getSize() {
@@ -55,31 +45,11 @@ public class Board {
         return board[cell.getR()][cell.getC()];
     }
 
-    public void move(@NotNull Move move, int player) {
+    public void move(Cell cell, int player) {
         numberOfMoves++;
-        if (move.isSwap()) {
-            int [][] temp = new int[size][size];
-            for (int i = 0; i < size; i++) System.arraycopy(board[i], 0, temp[i], 0, size);
-            for (int i = 0; i < size; i++) for (int j = 0; j < size; j++) {
-                if (temp[j][i] == 0) board[i][j] = 0;
-                else board[i][j] = 3 - temp[j][i];
-            }
+        if (cell != null) {
+            board[cell.getR()][cell.getC()] = player;
         }
-        else if (move.getNewCell() != null) {
-            board[move.getNewCell().getR()][move.getNewCell().getC()] = player;
-        }
-    }
-
-    public void undo(@NotNull Cell cell) {
-        int row = cell.getR();
-        int col = cell.getC();
-        if (board[row][col] == 1 || board[row][col] == 2) {
-            board[row][col] = 0;
-        }
-    }
-
-    public boolean isSwapAvailable() {
-        return numberOfMoves == 1;
     }
 
     public ArrayList<Cell> getAdjacents(@NotNull Cell cell) {
@@ -95,25 +65,6 @@ public class Board {
     }
 
     public int win() {
-        boolean[][] mark = new boolean[size][size];
-        for (int i = 0; i< size; i++){
-            if (!mark[0][i] && board[0][i] == 1) {
-                dfs(new Cell(0, i), mark, 1);
-            }
-        }
-        for (int i = 0; i < size; i++) {
-            if (mark[size - 1][i]) return 1;
-        }
-
-        mark = new boolean[size][size];
-        for (int i = 0; i < size; i++) {
-            if(!mark[i][0] && board[i][0] == 2) {
-                dfs(new Cell(i, 0), mark, 2);
-            }
-        }
-        for (int i = 0; i < size; i++) {
-            if (mark[i][size - 1]) return 2;
-        }
         return 0;
     }
 
@@ -136,11 +87,4 @@ public class Board {
 
     return visited
      */
-
-    private void dfs(Cell cell, boolean[][] mark, int player) {
-        mark[cell.getR()][cell.getC()] = true;
-        ArrayList<Cell> cells = getAdjacents(cell);
-        for (Cell c:cells) if (!mark[c.getR()][c.getC()] && get(c) == player)
-            dfs(c, mark, player);
-    }
 }

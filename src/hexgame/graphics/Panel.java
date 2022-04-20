@@ -1,18 +1,17 @@
 package hexgame.graphics;
 
-
 import hexgame.Board;
 import hexgame.Cell;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
-
 public class Panel extends JPanel {
-
     final static int size = 40;
     final static int gap = 10;
     private Board board;
@@ -22,22 +21,26 @@ public class Panel extends JPanel {
         super();
         setLayout(null);
         setOpaque(true);
+        MouseListener ml = new MouseListener();
+        addMouseListener(ml);
     }
 
     private double @NotNull [] rotate(double[] point, double @NotNull [] center) {
-        double [] res=new double[2];
-        AffineTransform.getRotateInstance(Math.toRadians(60), center[0], center[1])
-                .transform(point,0, res,0,1);
+        double[] res = new double[2];
+        AffineTransform.getRotateInstance(Math.toRadians(60), center[0], center[1]).transform(point,0, res,0,1);
         return res;
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         paintBoarder((Graphics2D) g);
+        int color;
         for (int i = 0; i < board.getSize(); i++) {
             for (int j = 0; j < board.getSize(); j++) {
                 double[] coordinate = coordinate(i, j);
-                paint((Graphics2D) g, coordinate[0], coordinate[1], colors[board.get(new Cell(board.getSize() - 1 - i, j))]);
+                if (board.get(new Cell(board.getSize() - 1 - i, j)) == -1) color = 2;
+                else color = board.get(new Cell(board.getSize() - 1 - i, j));
+                paint((Graphics2D) g, coordinate[0], coordinate[1], colors[color]);
             }
         }
     }
@@ -73,7 +76,7 @@ public class Panel extends JPanel {
         }
     }
 
-    public static double @NotNull [] coordinate(int x, int y) {
+    public double @NotNull [] coordinate(int x, int y) {
         double [] res = new double[2];
         res[0] = gap + (y + 1. / 2) * Math.sqrt(3) * size;
         res[1] = gap + size + x * 1.5 * size;
@@ -110,11 +113,32 @@ public class Panel extends JPanel {
         this.board = board;
     }
 
-    public static @NotNull Cell pxToHex(double x, double y) {
+    private Cell pxToHex(double cx, double cy) {
+        double[] c;
+        for (int x = 0; x < board.getSize(); x++) {
+            for (int y = 0; y < board.getSize(); y++) {
+                c = coordinate(x, y);
+                if (cx > c[0] - 30 && cx < c[0] + 30 && cy > c[1] - 30 && cy < c[1] + 30) {
+                    return new Cell(board.getSize() - x - 1, y);
+                }
+            }
+        }
+        return null;
+    }
 
-        Cell cell = new Cell((int) x, (int) y);
-
-
-        return cell;
+    public class MouseListener extends MouseAdapter {
+        public void mouseClicked(@NotNull MouseEvent e) {
+            Cell hex = pxToHex(e.getX(), e.getY());
+            if (hex != null && board.board[hex.r()][hex.c()] == 0) {
+                if (board.numberOfMoves % 2 == 0) board.move(hex, -1);
+                else board.move(hex, 1);
+                repaint();
+            }
+            if (board.win() == 1) {
+                System.out.println("Le rouge à gagné");
+            } else if (board.win() == -1) {
+                System.out.println(("Le bleu à gagné"));
+            }
+        }
     }
 }
