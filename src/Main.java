@@ -37,7 +37,7 @@ public class Main {
         Client client = new Client(board);
         int turn = 0;
 
-        return gameEnd(board);
+        return gameEnd(board, client);
     }
 
     private boolean play1V1() throws InterruptedException {
@@ -45,15 +45,17 @@ public class Main {
         Client client = new Client(board);
         Ai ai = new Ai(board, board.getSize());
 
-        return gameEnd(board);
+        return gameEnd(board, client);
     }
 
-    private boolean gameEnd(Board board) throws InterruptedException {
+    private boolean gameEnd(Board board, Client client) throws InterruptedException {
         while (board.win() == 0) {
             synchronized (this) {
-                this.wait();
+                this.wait(100);
             }
         }
+
+        client.close();
 
         String[] options = {"Nouvelle partie", "Quitter"};
         int choose = JOptionPane.showOptionDialog(null,
@@ -74,7 +76,7 @@ public class Main {
 
         while (board.win() == 0) {
             if (board.numberOfMoves % 2 == 0) {
-                board.move(ai.getBestMove(), -1);
+                board.move(ai.getBestMove(-1));
             }
         }
 

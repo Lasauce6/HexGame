@@ -12,8 +12,8 @@ public class Ai {
         this.boardSize = boardSize;
     }
 
-    public Cell getBestMove() {
+    public Cell getBestMove(int player) {
 
-        return new Cell(0, 0);
+        return new Cell(0, 0, player);
     }
 }

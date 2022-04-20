@@ -1,6 +1,11 @@
 package hexgame;
 
-public record Cell(int r, int c) {
+public record Cell(int r, int c, int player) {
+
+    public Cell(int r, int c) {
+        this(r, c, 0);
+    }
+
     public int getR() {
         return r;
     }
@@ -19,12 +24,5 @@ public record Cell(int r, int c) {
         if (r != cell.r) return false;
         return c == cell.c;
 
-    }
-
-    @Override
-    public int hashCode() {
-        int result = r;
-        result = 31 * result + c;
-        return result;
     }
 }

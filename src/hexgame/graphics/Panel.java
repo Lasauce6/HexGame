@@ -38,8 +38,8 @@ public class Panel extends JPanel {
         for (int i = 0; i < board.getSize(); i++) {
             for (int j = 0; j < board.getSize(); j++) {
                 double[] coordinate = coordinate(i, j);
-                if (board.get(new Cell(board.getSize() - 1 - i, j)) == -1) color = 2;
-                else color = board.get(new Cell(board.getSize() - 1 - i, j));
+                if (board.cellBoard[board.getSize() - 1 - i][j].player() == -1) color = 2;
+                else color = board.cellBoard[board.getSize() - 1 - i][j].player();
                 paint((Graphics2D) g, coordinate[0], coordinate[1], colors[color]);
             }
         }
@@ -119,7 +119,7 @@ public class Panel extends JPanel {
             for (int y = 0; y < board.getSize(); y++) {
                 c = coordinate(x, y);
                 if (cx > c[0] - 30 && cx < c[0] + 30 && cy > c[1] - 30 && cy < c[1] + 30) {
-                    return new Cell(board.getSize() - x - 1, y);
+                    return new Cell(board.getSize() - x - 1, y, board.numberOfMoves % 2 == 0 ? -1 : 1);
                 }
             }
         }
@@ -130,10 +130,11 @@ public class Panel extends JPanel {
         public void mouseClicked(@NotNull MouseEvent e) {
             Cell hex = pxToHex(e.getX(), e.getY());
             if (hex != null && board.board[hex.r()][hex.c()] == 0) {
-                if (board.numberOfMoves % 2 == 0) board.move(hex, -1);
-                else board.move(hex, 1);
+                board.move(hex);
+                System.out.println(board.cellBoard[hex.r()][hex.c()]);
                 repaint();
             }
+
             if (board.win() == 1) {
                 System.out.println("Le rouge à gagné");
             } else if (board.win() == -1) {
