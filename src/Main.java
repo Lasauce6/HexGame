@@ -10,10 +10,10 @@ public class Main {
      * Le menu principal
      */
     public static void main(String[] args) throws InterruptedException {
-        boolean fin=false;
+        boolean fin = false;
         int choose;
         Main main = new Main();
-        String[] options = {"1v1", "Vs ordi", "TEST", "Quitter"};
+        String[] options = {"1v1", "Vs ordi", "Quitter"};
         while(!fin) {
             choose = JOptionPane.showOptionDialog(null,
                     "Veuillez saisir votre choix",
@@ -22,22 +22,14 @@ public class Main {
                     JOptionPane.QUESTION_MESSAGE,
                     null,
                     options,
-                    options[3]
+                    options[2]
                     );
             switch (choose) {
                 case 0 -> fin = main.play1V1();
                 case 1 -> fin = main.playVsAI();
-                case 2 -> fin = main.start();
-                case 3 -> fin = true;
+                case 2 -> fin = true;
             }
         }
-    }
-
-    private boolean start() throws InterruptedException {
-        Board board = new Board();
-        Client client = new Client(board);
-
-        return gameEnd(board, client);
     }
 
     /**
@@ -47,8 +39,6 @@ public class Main {
     private boolean play1V1() throws InterruptedException {
         Board board = new Board();
         Client client = new Client(board);
-
-        win(board.win());
 
         return gameEnd(board, client);
     }
@@ -68,6 +58,8 @@ public class Main {
         }
 
         client.close();
+
+        win(board.win());
 
         String[] options = {"Nouvelle partie", "Quitter"};
         int choose = JOptionPane.showOptionDialog(null,
@@ -89,24 +81,32 @@ public class Main {
         Board board = new Board();
         Client client = new Client(board);
         Ai ai = new Ai(board, board.getSize());
+        int debug = 0;
         Cell move;
 
         while (board.win() == 0) {
-            System.out.println(board.numberOfMoves);
+            if (debug == 0) {
+                System.out.println(board.numberOfMoves);
+            }
             if (board.numberOfMoves % 2 == 0 && board.win() == 0) {
+                System.out.println(board.numberOfMoves);
                 move = ai.getBestMove(-1);
+                System.out.println(move);
                 while (board.board[move.r()][move.c()] != 0) {
                     move = ai.getBestMove(-1);
                 }
                 board.move(move);
+                debug++;
             }
         }
-
-        win(board.win());
 
         return gameEnd(board, client);
     }
 
+    /**
+     *
+     * @param player
+     */
     public void win(int player) {
         if (player == 1) {
             JOptionPane.showMessageDialog(null,
