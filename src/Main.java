@@ -1,4 +1,5 @@
 import hexgame.Board;
+import hexgame.Cell;
 import hexgame.ai.Ai;
 import hexgame.graphics.Client;
 
@@ -35,7 +36,6 @@ public class Main {
     private boolean start() throws InterruptedException {
         Board board = new Board();
         Client client = new Client(board);
-        int turn = 0;
 
         return gameEnd(board, client);
     }
@@ -47,7 +47,8 @@ public class Main {
     private boolean play1V1() throws InterruptedException {
         Board board = new Board();
         Client client = new Client(board);
-        Ai ai = new Ai(board, board.getSize());
+
+        win(board.win());
 
         return gameEnd(board, client);
     }
@@ -84,18 +85,40 @@ public class Main {
      * Lance une partie contre l'IA
      * @return false si le joueur veut continuer de jouer true s'il veut quitter
      */
-    private boolean playVsAI() {
+    private boolean playVsAI() throws InterruptedException {
         Board board = new Board();
-        new Client(board);
+        Client client = new Client(board);
         Ai ai = new Ai(board, board.getSize());
+        Cell move;
 
         while (board.win() == 0) {
-            if (board.numberOfMoves % 2 == 0) {
-                board.move(ai.getBestMove(-1));
+            System.out.println(board.numberOfMoves);
+            if (board.numberOfMoves % 2 == 0 && board.win() == 0) {
+                move = ai.getBestMove(-1);
+                while (board.board[move.r()][move.c()] != 0) {
+                    move = ai.getBestMove(-1);
+                }
+                board.move(move);
             }
         }
 
-        return true;
+        win(board.win());
+
+        return gameEnd(board, client);
+    }
+
+    public void win(int player) {
+        if (player == 1) {
+            JOptionPane.showMessageDialog(null,
+                    "Le joueur rouge à gagné",
+                    "Victoire",
+                    JOptionPane.INFORMATION_MESSAGE);
+        } else if (player == -1) {
+            JOptionPane.showMessageDialog(null,
+                    "Le joueur bleu à gagné",
+                    "Victoire",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
 

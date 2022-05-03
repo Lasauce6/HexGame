@@ -47,8 +47,8 @@ public class Board {
      * @param cell la cellule jouée
      */
     public void move(Cell cell) {
-        numberOfMoves++;
         if (cell != null) {
+            numberOfMoves++;
             board[cell.r()][cell.c()] = cell.player();
             cellBoard[cell.r()][cell.c()] = cell;
         }
