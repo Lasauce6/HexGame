@@ -10,31 +10,66 @@ import java.awt.event.WindowEvent;
  * Définie un client
  */
 public class Client {
-    private final JFrame hexFrame = new JFrame("HexGame"); // La fenêtre de jeu
+    private final JFrame frame = new JFrame("HexGame"); // La fenêtre de jeu
+
+    public Client() {
+        frame.setLayout(null);
+        frame.setResizable(true);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        frame.setPreferredSize(new Dimension(1155, 730));
+        frame.pack();
+        frame.setVisible(true);
+    }
 
     /**
-     * Constructeur de la classe Client
-     * @param board le plateau
+     * Affiche le menu principal
+     * @param board le plateau de jeu
      */
-    public Client(Board board) {
-        Panel panel = new Panel(board);
-        double[] c = panel.coordinate(board.getSize() - 1, board.getSize() - 1);
-        c[0] += Panel.size * Math.sqrt(3) / 2 + Panel.gap;
-        c[1] += Panel.size + Panel.gap;
-        panel.setBounds(0, 0, (int) Math.round(c[0]), (int) Math.round(c[1]));
-        hexFrame.setLayout(null);
-        hexFrame.setResizable(false);
-        hexFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        hexFrame.setPreferredSize(new Dimension((int) Math.round(c[0]), (int) Math.round(c[1])));
-        hexFrame.pack();
-        hexFrame.setVisible(true);
-        hexFrame.add(panel);
+    public void menu(Board board) {
+        MenuPanel panel = new MenuPanel(this, board);
+        panel.setBounds(0, 0, 1155, 730);
+        frame.setContentPane(panel);
+        frame.repaint();
+    }
+
+    /**
+     * Affiche le menu en ligne
+     * @param board le plateau de jeu
+     */
+    public void menuOnline(Board board) {
+        MenuOnlinePanel panel = new MenuOnlinePanel(this, board);
+        panel.setBounds(0, 0, 1155, 730);
+        frame.setContentPane(panel);
+        frame.repaint();
+    }
+
+    /**
+     * Démarre une partie 1v1
+     * @param board le plateau de jeu
+     */
+    public void game1v1(Board board) {
+        GamePanel panel = new GamePanel(board);
+        panel.setBounds(0, 0, 1155, 730);
+        frame.setContentPane(panel);
+        frame.repaint();
+
+    }
+
+    /**
+     * Démarre une partie contre l'ia
+     * @param board le plateau de jeu
+     */
+    public void gameVsAi(Board board) {
+        GamePanel panel = new GamePanel(board);
+        panel.setBounds(0, 0, 1155, 730);
+        frame.setContentPane(panel);
+        frame.repaint();
     }
 
     /**
      * Ferme la fenêtre
      */
     public void close() {
-        hexFrame.dispatchEvent(new WindowEvent(hexFrame, WindowEvent.WINDOW_CLOSING));
+        frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
     }
 }
