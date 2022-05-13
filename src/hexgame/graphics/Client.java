@@ -48,19 +48,34 @@ public class Client {
      * @param board le plateau de jeu
      */
     public void game1v1(Board board) {
-        GamePanel panel = new GamePanel(board);
+        GamePanel panel = new GamePanel(this, board);
         panel.setBounds(0, 0, 1155, 730);
         frame.setContentPane(panel);
         frame.repaint();
+    }
 
+    public void menuAi(Board board) {
+        AiPanel panel = new AiPanel(this, board);
+        panel.setBounds(0, 0, 1155, 730);
+        frame.setContentPane(panel);
+        frame.repaint();
     }
 
     /**
      * Démarre une partie contre l'ia
      * @param board le plateau de jeu
      */
-    public void gameVsAi(Board board) {
-        GamePanel panel = new GamePanel(board);
+    public void gameVsAi(int diff, Board board) {
+        GamePanel panel = new GamePanel(this, board);
+        panel.ISAI = true;
+        panel.AILEVEL = diff;
+        panel.setBounds(0, 0, 1155, 730);
+        frame.setContentPane(panel);
+        frame.repaint();
+    }
+
+    public void gameEnd(int player, Board board) {
+        EndPanel panel = new EndPanel(player, this, board);
         panel.setBounds(0, 0, 1155, 730);
         frame.setContentPane(panel);
         frame.repaint();

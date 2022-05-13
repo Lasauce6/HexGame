@@ -55,7 +55,7 @@ public class MenuPanel  extends JPanel implements ActionListener {
      * Affiche le titre
      * @param g the <code>Graphics</code> object to protect
      */
-    public void title(Graphics g) {
+    private void title(Graphics g) {
         String title = "Hex Game";
         g.drawString(title, getWidth() / 2 - 125, 100);
     }
@@ -63,7 +63,7 @@ public class MenuPanel  extends JPanel implements ActionListener {
     /**
      * Affiche le bouton 1v1
      */
-    public void play1v1() {
+    private void play1v1() {
         button1v1.setBounds(getWidth() / 2 - 140, 150, 300, 100);
         button1v1.setText("1v1");
         this.add(button1v1);
@@ -72,7 +72,7 @@ public class MenuPanel  extends JPanel implements ActionListener {
     /**
      * Affiche le bouton Vs Ordi
      */
-    public void playVsAi() {
+    private void playVsAi() {
         buttonVsAi.setBounds(getWidth() / 2 - 140, 275, 300, 100);
         buttonVsAi.setText("Vs Ordi");
         this.add(buttonVsAi);
@@ -81,7 +81,7 @@ public class MenuPanel  extends JPanel implements ActionListener {
     /**
      * Affiche le bouton Online
      */
-    public void online() {
+    private void online() {
         buttonOnline.setBounds(getWidth() / 2 - 140, 400, 300, 100);
         buttonOnline.setText("Online");
         this.add(buttonOnline);
@@ -90,9 +90,9 @@ public class MenuPanel  extends JPanel implements ActionListener {
     /**
      * Affiche le bouton Quit
      */
-    public void quit() {
+    private void quit() {
         buttonQuit.setBounds(getWidth() / 2 - 140, 525, 300, 100);
-        buttonQuit.setText("Quit");
+        buttonQuit.setText("Quitter");
         this.add(buttonQuit);
     }
 
@@ -105,7 +105,7 @@ public class MenuPanel  extends JPanel implements ActionListener {
         if (e.getSource() == button1v1) {
             client.game1v1(board);
         } else if (e.getSource() == buttonVsAi) {
-            client.gameVsAi(board);
+            client.menuAi(board);
         } else if (e.getSource() == buttonOnline) {
             client.menuOnline(board);
         } else {

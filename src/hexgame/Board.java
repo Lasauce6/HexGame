@@ -1,5 +1,6 @@
 package hexgame;
 
+import java.nio.channels.CancelledKeyException;
 import java.util.ArrayList;
 
 /**
@@ -11,6 +12,7 @@ public class Board {
     public int numberOfMoves; // Nombre de mouvements faits
     public Cell[][] cellBoard = new Cell[size][size]; // Plateau rempli de cellules
     private Cell lastMove;
+
 
     /**
      * Initialisation de la classe Board
@@ -72,18 +74,14 @@ public class Board {
      * @return la liste des cellules adjacentes
      */
     public ArrayList<Cell> getAdjacents(Cell cell) {
-        ArrayList<Cell> result = new ArrayList<>();
-        for (int r = cell.r() - 1; r <= cell.r() + 1; r++) if (r >= 0 && r < size) {
-            int min = (r <= cell.r() ?- 1 : 0);
-            int max = (r <= cell.r() ?+ 1 : 0);
-            for (int c = cell.c() + min; c <= cell.c() + max; c++) {
-                if (c >= 0 && c < size) {
-                    if (!new Cell(r, c, cell.player()).equals(cell)) {
-                        result.add(cellBoard[r][c]);
-                    }
-                }
-            }
-        }
+        ArrayList<Cell> result =  new ArrayList<>();
+        if (cell.r() - 1 >= 0) result.add(cellBoard[cell.r() - 1][cell.c()]);
+        if (cell.c() - 1 >= 0) result.add(cellBoard[cell.r()][cell.c() - 1]);
+        if (cell.r() - 1 >= 0 && cell.c() - 1 >= 0) result.add(cellBoard[cell.r() - 1][cell.c() - 1]);
+        if (cell.r() + 1 < 11) result.add(cellBoard[cell.r() + 1][cell.c()]);
+        if (cell.c() + 1 < 11) result.add(cellBoard[cell.r()][cell.c() + 1]);
+        if (cell.r() + 1 < 11 && cell.c() + 1 < 11) result.add(cellBoard[cell.r() + 1][cell.c() + 1]);
+
         return result;
     }
 

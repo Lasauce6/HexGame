@@ -6,7 +6,7 @@ package hexgame;
  * @param c la colonne de la cellule
  * @param player le joueur dans cette cellule (0 si aucun)
  */
-public record Cell(int r, int c, int player) {
+public record Cell(int r, int c, int player) implements Comparable {
     /**
      * Constructeur sans définir de joueur
      * @param r la ligne de la cellule
@@ -14,5 +14,9 @@ public record Cell(int r, int c, int player) {
      */
     public Cell(int r, int c) {
         this(r, c, 0);
+    }
+
+    public int compareTo(Object other) {
+        return this.player - ((Cell) other).player;
     }
 }

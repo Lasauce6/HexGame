@@ -2,6 +2,7 @@ package hexgame.graphics;
 
 import hexgame.Board;
 import hexgame.Cell;
+import hexgame.ai.AiRandom;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,17 +16,23 @@ import java.util.ArrayList;
  * Définie la fenêtre
  */
 public class GamePanel extends JPanel {
-    final static int size = 40; // La taille initiale de la fenêtre
-    final static int gap = 10;
+    public boolean ISAI = false;
+    public int AILEVEL = 0;
+    private final AiRandom AIRANDOM;
+    private final static int size = 40; // La taille initiale de la fenêtre
+    private final static int gap = 10;
     private final Board board; // Le plateau
+    private final Client CLIENT;
     private final Color [] colors = {Color.WHITE, new Color(255,67,46), new Color(83,187,244)}; // Les couleurs utilisées
 
     /**
      * Constructeur du Panel
      */
-    public GamePanel(Board board) {
+    public GamePanel(Client client, Board board) {
         super();
         this.board = board;
+        this.CLIENT = client;
+        this.AIRANDOM = new AiRandom(board);
         setLayout(null);
         setOpaque(true);
         MouseListener ml = new MouseListener();
@@ -63,7 +70,7 @@ public class GamePanel extends JPanel {
         if (board.numberOfMoves == 1) {
             swap(g);
         } else if (board.numberOfMoves == 2) {
-            rmSwap(g);
+            rmSwap();
         }
     }
 
@@ -199,9 +206,8 @@ public class GamePanel extends JPanel {
 
     /**
      * Enlève le bouton swap
-     * @param g the <code>Graphics</code> object to protect
      */
-    private void rmSwap(Graphics g) {
+    private void rmSwap() {
         this.repaint();
     }
 
@@ -222,7 +228,24 @@ public class GamePanel extends JPanel {
                 } else if (board.board[hex.r()][hex.c()] == 0) {
                     board.move(hex);
                     repaint();
+                    if (ISAI) {
+                        if (AILEVEL == 1) {
+                            Cell move = AIRANDOM.getBestMove();
+                            if (move.c() == -1 && move.r() == -1) board.swap();
+                            else board.move(AIRANDOM.getBestMove());
+                            repaint();
+                        } else if (AILEVEL == 2) {
+                            System.out.println("OUI");
+                        } else {
+                            System.out.println("LEZGO");
+                        }
+
+                    }
+                    if (board.win() != 0) {
+                        CLIENT.gameEnd(board.win(), new Board());
+                    }
                 }
+
             }
         }
     }
