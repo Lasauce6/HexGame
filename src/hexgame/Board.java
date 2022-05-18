@@ -1,17 +1,16 @@
 package hexgame;
 
-import java.nio.channels.CancelledKeyException;
 import java.util.ArrayList;
 
 /**
  * Défini le plateau de jeu
  */
 public class Board {
-    private static final int size = 11; // Taille du plateau
+    private static final int SIZE = 11; // Taille du plateau
     public int[][] board; // Plateau -1 pour bleu 1 pour rouge et 0 pour une case vide
     public int numberOfMoves; // Nombre de mouvements faits
-    public Cell[][] cellBoard = new Cell[size][size]; // Plateau rempli de cellules
-    private Cell lastMove;
+    public Cell[][] cellBoard = new Cell[SIZE][SIZE]; // Plateau rempli de cellules
+    public Cell lastMove;
 
 
     /**
@@ -22,8 +21,8 @@ public class Board {
     public Board(int[][] board, int numberOfMoves) {
         this.board = board;
         this.numberOfMoves = numberOfMoves;
-        for (int c = 0; c < size; c++) {
-            for (int r = 0; r < size; r++) {
+        for (int c = 0; c < SIZE; c++) {
+            for (int r = 0; r < SIZE; r++) {
                 cellBoard[r][c] = new Cell(r, c);
             }
         }
@@ -33,14 +32,14 @@ public class Board {
      * Initialisation de la classe Board
      */
     public Board() {
-        this(new int[size][size], 0);
+        this(new int[SIZE][SIZE], 0);
     }
 
     /**
      * @return la taille du plateau
      */
     public int getSize() {
-        return size;
+        return SIZE;
     }
 
     /**
@@ -90,10 +89,10 @@ public class Board {
      * @return le numéro de la personne gagnante
      */
     public int win() {
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                if (board[i][0] == -1 && board[j][size - 1] == -1 && path(cellBoard[i][0], cellBoard[j][size - 1], new ArrayList<>())) return -1;
-                if (board[0][i] == 1 && board[size - 1][j] == 1 && path(cellBoard[0][i], cellBoard[size - 1][j], new ArrayList<>())) return 1;
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (board[i][0] == -1 && board[j][SIZE - 1] == -1 && path(cellBoard[i][0], cellBoard[j][SIZE - 1], new ArrayList<>())) return -1;
+                if (board[0][i] == 1 && board[SIZE - 1][j] == 1 && path(cellBoard[0][i], cellBoard[SIZE - 1][j], new ArrayList<>())) return 1;
             }
         }
         return 0;
@@ -107,10 +106,9 @@ public class Board {
      * @return vrai ou faux si le chemin est possible
      */
     public boolean path(Cell start, Cell end, ArrayList<Cell> visited) {
-        if(start.equals(end)) {
-            return true;
-        }
+        if(start.equals(end)) return true;
         if(start.player() != end.player()) return false;
+
         visited.add(start);
         for(Cell c : getAdjacents(start)) {
             if(!visited.contains(c)) {

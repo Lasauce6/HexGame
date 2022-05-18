@@ -36,39 +36,35 @@ public class EndPanel extends JPanel implements ActionListener {
         super.paintComponent(g);
         g.setFont(font);
         g.setColor(Color.BLACK);
-        title(g);
-        newGame();
-        quit();
+        setTitle(g);
+        setButtonNewGame();
+        setButtonQuit();
     }
 
-    public void title(Graphics g) {
+    private void setTitle(Graphics g) {
         String title;
-        if (player == 1) {
-            title = "Le joueur rouge a gagné !!!";
-        } else {
-            title = "Le joueur bleu a gagné !!!";
-        }
+        if (player == 1) title = "Le joueur rouge a gagné !!!";
+        else title = "Le joueur bleu a gagné !!!";
         g.drawString(title, getWidth() / 2 - 325, 100);
     }
 
-    public void newGame() {
+    private void setButtonNewGame() {
         buttonNewGame.setBounds(getWidth() / 2 - 140, 150, 300, 100);
+        buttonNewGame.setFont(new Font("arial", Font.PLAIN, 24));
         buttonNewGame.setText("Nouvelle partie");
         this.add(buttonNewGame);
     }
 
-    public void quit() {
+    private void setButtonQuit() {
         buttonQuit.setBounds(getWidth() / 2 - 140, 275, 300, 100);
+        buttonQuit.setFont(new Font("arial", Font.PLAIN, 24));
         buttonQuit.setText("Quitter");
         this.add(buttonQuit);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == buttonNewGame) {
-            client.menu(board);
-        } else {
-            client.close();
-        }
+        if (e.getSource() == buttonNewGame) client.menu(board);
+        else client.close();
     }
 }

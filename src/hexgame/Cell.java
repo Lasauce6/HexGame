@@ -16,6 +16,10 @@ public record Cell(int r, int c, int player) implements Comparable {
         this(r, c, 0);
     }
 
+    /**
+     * Compare la cellule à une autre
+     * @param other the object to be compared.
+     */
     public int compareTo(Object other) {
         return this.player - ((Cell) other).player;
     }

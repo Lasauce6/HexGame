@@ -14,7 +14,7 @@ public class Client {
 
     public Client() {
         frame.setLayout(null);
-        frame.setResizable(true);
+        frame.setResizable(false);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setPreferredSize(new Dimension(1155, 730));
         frame.pack();
@@ -36,8 +36,15 @@ public class Client {
      * Affiche le menu en ligne
      * @param board le plateau de jeu
      */
-    public void menuOnline(Board board) {
-        MenuOnlinePanel panel = new MenuOnlinePanel(this, board);
+    public void menuTournoi(Board board) {
+        TournoiPanel panel = new TournoiPanel(this, board);
+        panel.setBounds(0, 0, 1155, 730);
+        frame.setContentPane(panel);
+        frame.repaint();
+    }
+
+    public void menuAi(Board board) {
+        AiPanel panel = new AiPanel(this, board);
         panel.setBounds(0, 0, 1155, 730);
         frame.setContentPane(panel);
         frame.repaint();
@@ -54,25 +61,18 @@ public class Client {
         frame.repaint();
     }
 
-    public void menuAi(Board board) {
-        AiPanel panel = new AiPanel(this, board);
+    /**
+     * Démarre une partie contre l'ia
+     * @param board le plateau de jeu
+     */
+    public void gameVsAi(int diff, int aiPlayer, Board board) {
+        GamePanel panel = new GamePanel(this, board, aiPlayer, diff);
         panel.setBounds(0, 0, 1155, 730);
         frame.setContentPane(panel);
         frame.repaint();
     }
 
-    /**
-     * Démarre une partie contre l'ia
-     * @param board le plateau de jeu
-     */
-    public void gameVsAi(int diff, Board board) {
-        GamePanel panel = new GamePanel(this, board);
-        panel.ISAI = true;
-        panel.AILEVEL = diff;
-        panel.setBounds(0, 0, 1155, 730);
-        frame.setContentPane(panel);
-        frame.repaint();
-    }
+    // TODO: Une fonction pour une partie de tournoi
 
     public void gameEnd(int player, Board board) {
         EndPanel panel = new EndPanel(player, this, board);

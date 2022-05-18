@@ -6,22 +6,24 @@ import hexgame.Cell;
 import java.util.Random;
 
 public class AiRandom {
-    private final Board BOARD;
+    private final Board board;
+    private final int player;
 
-    public AiRandom(Board board) {
-        this.BOARD = board;
+    public AiRandom(Board board, int player) {
+        this.board = board;
+        this.player = player;
     }
 
     public Cell getBestMove() {
-        if (BOARD.numberOfMoves == 1) {
+        if (board.numberOfMoves == 1) {
             return new Cell(-1, -1, 1);
         }
         Random random = new Random();
         int x = random.nextInt(11), y = random.nextInt(11);
-        while (BOARD.board[x][y] != 0) {
+        while (board.board[x][y] != 0) {
             x = random.nextInt(11);
             y = random.nextInt(11);
         }
-        return new Cell(x, y, 1);
+        return new Cell(x, y, player);
     }
 }

@@ -22,7 +22,7 @@ public class Channel {
 
     private String genNonce() {
         char[] sb = new char[64];
-        for(int i=0; i < 64; i++) {
+        for(int i = 0; i < 64; i++) {
             sb[i] = nonce.charAt(r.nextInt(62));
         }
         return new String(sb);
@@ -51,7 +51,7 @@ public class Channel {
             events.add(buff );
             parseEvent(bb, i + size);
         } else {
-            id =Integer.parseInt(sb.toString());
+            id = Integer.parseInt(sb.toString());
         }
 
 
@@ -59,12 +59,12 @@ public class Channel {
 
     public void connect() {
         String id2 = "";
-        if (id>0) {
+        if (id > 0) {
             id2 = "?id="+id;
         }
         URL u;
         try {
-            u = new URL(addr+channel_name+id2);
+            u = new URL(addr + channel_name + id2);
             URLConnection uc = u.openConnection();
             InputStream is = uc.getInputStream();
             byte[] bs=is.readAllBytes();

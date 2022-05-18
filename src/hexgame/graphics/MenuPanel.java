@@ -16,7 +16,7 @@ public class MenuPanel  extends JPanel implements ActionListener {
     private final Font font = new Font("arial", Font.BOLD, 50);
     private final JButton button1v1  = new JButton();
     private final JButton buttonVsAi = new JButton();
-    private final JButton buttonOnline = new JButton();
+    private final JButton buttonTournament = new JButton();
     private final JButton buttonQuit = new JButton();
 
     /**
@@ -32,7 +32,7 @@ public class MenuPanel  extends JPanel implements ActionListener {
         setOpaque(true);
         button1v1.addActionListener(this);
         buttonVsAi.addActionListener(this);
-        buttonOnline.addActionListener(this);
+        buttonTournament.addActionListener(this);
         buttonQuit.addActionListener(this);
     }
 
@@ -44,18 +44,18 @@ public class MenuPanel  extends JPanel implements ActionListener {
         super.paintComponent(g);
         g.setFont(font);
         g.setColor(Color.BLACK);
-        title(g);
-        play1v1();
-        playVsAi();
-        online();
-        quit();
+        setTitle(g);
+        setButton1v1();
+        setButtonVsAi();
+        setButtonTournament();
+        setButtonQuit();
     }
 
     /**
      * Affiche le titre
      * @param g the <code>Graphics</code> object to protect
      */
-    private void title(Graphics g) {
+    private void setTitle(Graphics g) {
         String title = "Hex Game";
         g.drawString(title, getWidth() / 2 - 125, 100);
     }
@@ -63,8 +63,9 @@ public class MenuPanel  extends JPanel implements ActionListener {
     /**
      * Affiche le bouton 1v1
      */
-    private void play1v1() {
+    private void setButton1v1() {
         button1v1.setBounds(getWidth() / 2 - 140, 150, 300, 100);
+        button1v1.setFont(new Font("arial", Font.PLAIN, 24));
         button1v1.setText("1v1");
         this.add(button1v1);
     }
@@ -72,32 +73,35 @@ public class MenuPanel  extends JPanel implements ActionListener {
     /**
      * Affiche le bouton Vs Ordi
      */
-    private void playVsAi() {
+    private void setButtonVsAi() {
         buttonVsAi.setBounds(getWidth() / 2 - 140, 275, 300, 100);
+        buttonVsAi.setFont(new Font("arial", Font.PLAIN, 24));
         buttonVsAi.setText("Vs Ordi");
         this.add(buttonVsAi);
     }
 
     /**
-     * Affiche le bouton Online
+     * Affiche le bouton Tournoi
      */
-    private void online() {
-        buttonOnline.setBounds(getWidth() / 2 - 140, 400, 300, 100);
-        buttonOnline.setText("Online");
-        this.add(buttonOnline);
+    private void setButtonTournament() {
+        buttonTournament.setBounds(getWidth() / 2 - 140, 400, 300, 100);
+        buttonTournament.setFont(new Font("arial", Font.PLAIN, 24));
+        buttonTournament.setText("Tournoi");
+        this.add(buttonTournament);
     }
 
     /**
      * Affiche le bouton Quit
      */
-    private void quit() {
+    private void setButtonQuit() {
         buttonQuit.setBounds(getWidth() / 2 - 140, 525, 300, 100);
+        buttonQuit.setFont(new Font("arial", Font.PLAIN, 24));
         buttonQuit.setText("Quitter");
         this.add(buttonQuit);
     }
 
     /**
-     * Effectue l'action en fonction du bouton pressé
+     * Effectue l'action voulue en fonction du bouton pressé
      * @param e the event to be processed
      */
     @Override
@@ -106,8 +110,8 @@ public class MenuPanel  extends JPanel implements ActionListener {
             client.game1v1(board);
         } else if (e.getSource() == buttonVsAi) {
             client.menuAi(board);
-        } else if (e.getSource() == buttonOnline) {
-            client.menuOnline(board);
+        } else if (e.getSource() == buttonTournament) {
+            client.menuTournoi(board);
         } else {
             client.close();
         }

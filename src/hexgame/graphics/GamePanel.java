@@ -2,6 +2,7 @@ package hexgame.graphics;
 
 import hexgame.Board;
 import hexgame.Cell;
+import hexgame.ai.AiObject;
 import hexgame.ai.AiRandom;
 
 import javax.swing.*;
@@ -16,27 +17,66 @@ import java.util.ArrayList;
  * Définie la fenêtre
  */
 public class GamePanel extends JPanel {
-    public boolean ISAI = false;
-    public int AILEVEL = 0;
-    private final AiRandom AIRANDOM;
-    private final static int size = 40; // La taille initiale de la fenêtre
-    private final static int gap = 10;
+    public boolean isAi;
+    public int aiLevel = 0;
+    public int aiPlayer = 0;
+    private AiRandom aiRandom = null;
+    private AiObject ai = null;
+    private boolean smart = false;
+    private final static int SIZE = 40; // La taille initiale de la fenêtre
+    private final static int GAP = 10;
     private final Board board; // Le plateau
-    private final Client CLIENT;
+    private final Client client;
     private final Color [] colors = {Color.WHITE, new Color(255,67,46), new Color(83,187,244)}; // Les couleurs utilisées
 
     /**
-     * Constructeur du Panel
+     * Le constructeur du Panel pour une partie sans IA
+     * @param client le client
+     * @param board le plateau de jeu
      */
     public GamePanel(Client client, Board board) {
         super();
+        isAi = false;
         this.board = board;
-        this.CLIENT = client;
-        this.AIRANDOM = new AiRandom(board);
+        this.client = client;
         setLayout(null);
         setOpaque(true);
         MouseListener ml = new MouseListener();
         addMouseListener(ml);
+    }
+
+    /**
+     * Le constructeur du Panel pour une partie avec l'IA
+     * @param client le client
+     * @param board le plateau de jeu
+     * @param aiPlayer le camp de l'IA
+     * @param aiLevel le niveau de l'IA
+     */
+    public GamePanel(Client client, Board board, int aiPlayer, int aiLevel) {
+        super();
+        isAi = true;
+        this.board = board;
+        this.client = client;
+        this.aiRandom = new AiRandom(board, aiPlayer);
+        this.ai = new AiObject(board, aiPlayer);
+        this.aiPlayer = aiPlayer;
+        this.aiLevel = aiLevel;
+        setLayout(null);
+        setOpaque(true);
+        MouseListener ml = new MouseListener();
+        addMouseListener(ml);
+        if (aiPlayer == -1)  {
+            if (aiLevel < 3) {
+                board.move(aiRandom.getBestMove());
+                if (aiLevel == 2) {
+                    smart = true;
+                }
+            } else {
+                Cell move = ai.getMove();
+                System.out.println(move);
+                board.move(move);
+            }
+        }
     }
 
     /**
@@ -82,19 +122,19 @@ public class GamePanel extends JPanel {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         ArrayList<double[]> points = new ArrayList<>();
-        points.add(new double[] {-size * 1.5, 0});
+        points.add(new double[] {-SIZE * 1.5, 0});
         double[] temp = coordinate(0, board.getSize() - 1);
         temp[1] = 0;
-        temp[0] += 1.5 * size;
+        temp[0] += 1.5 * SIZE;
         points.add(temp);
         temp = coordinate(board.getSize() - 1, board.getSize() - 1);
-        temp[0] += size * Math.sqrt(3) / 2 + gap + size * 1.5;
-        temp[1] += size + gap;
+        temp[0] += SIZE * Math.sqrt(3) / 2 + GAP + SIZE * 1.5;
+        temp[1] += SIZE + GAP;
         points.add(temp);
         double bt = temp[1];
         temp = coordinate(board.getSize() - 1, 0);
         temp[1] = bt;
-        temp[0] -= 1.5 * size;
+        temp[0] -= 1.5 * SIZE;
         points.add(temp);
 
         for (int i = 0; i < points.size(); i++) {
@@ -117,9 +157,9 @@ public class GamePanel extends JPanel {
      */
     public double[] coordinate(int x, int y) {
         double [] res = new double[2];
-        res[0] = gap + (y + 1. / 2) * Math.sqrt(3) * size;
-        res[1] = gap + size + x * 1.5 * size;
-        res[0] += Math.sqrt(3) / 2 * x * size;
+        res[0] = GAP + (y + 1. / 2) * Math.sqrt(3) * SIZE;
+        res[1] = GAP + SIZE + x * 1.5 * SIZE;
+        res[0] += Math.sqrt(3) / 2 * x * SIZE;
         return res;
     }
 
@@ -133,7 +173,7 @@ public class GamePanel extends JPanel {
     private void paint(Graphics2D g, double cx, double cy, Color color) {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
-        double[] now = {cx, cy - (double) GamePanel.size};
+        double[] now = {cx, cy - (double) GamePanel.SIZE};
         int[] x = new int[6];
         int[] y = new int[6];
 
@@ -224,28 +264,36 @@ public class GamePanel extends JPanel {
             if (hex != null) {
                 if (hex.r() == -1 && hex.c() == -1) {
                     board.swap();
-                    repaint();
+                    if (isAi) aiMove();
                 } else if (board.board[hex.r()][hex.c()] == 0) {
                     board.move(hex);
-                    repaint();
-                    if (ISAI) {
-                        if (AILEVEL == 1) {
-                            Cell move = AIRANDOM.getBestMove();
-                            if (move.c() == -1 && move.r() == -1) board.swap();
-                            else board.move(AIRANDOM.getBestMove());
-                            repaint();
-                        } else if (AILEVEL == 2) {
-                            System.out.println("OUI");
-                        } else {
-                            System.out.println("LEZGO");
-                        }
+                    if (isAi) aiMove();
 
-                    }
                     if (board.win() != 0) {
-                        CLIENT.gameEnd(board.win(), new Board());
+                        client.gameEnd(board.win(), new Board());
                     }
                 }
+            }
+            repaint();
+        }
 
+        private void aiMove() {
+            if (aiLevel == 1) {
+                Cell move = aiRandom.getBestMove();
+                if (move.c() == -1 && move.r() == -1) board.swap();
+                else board.move(aiRandom.getBestMove());
+            } else if (aiLevel == 2) {
+                Cell move;
+                if (smart) move = ai.getMove();
+                else move = aiRandom.getBestMove();
+                System.out.println(move);
+                if (move.r() == -1 && move.c() == -1) board.swap();
+                else board.move(move);
+            } else {
+                Cell move = ai.getMove();
+                System.out.println(move);
+                if (move.r() == -1 && move.c() == -1) board.swap();
+                else board.move(move);
             }
         }
     }
