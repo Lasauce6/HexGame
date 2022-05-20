@@ -59,15 +59,15 @@ public class TournoiPanel extends JPanel implements ActionListener {
     }
 
     private void setChannels() {
-        JLabel label1 = new JLabel("Nom du premier channel :");
-        label1.setBounds(getWidth() / 2 - 200, 130, 190, 50);
+        JLabel label1 = new JLabel("Nom du channel d'envoi :");
+        label1.setBounds(getWidth() / 2 - 220, 130, 210, 50);
         label1.setFont(new Font("arial", Font.PLAIN, 14));
-        JLabel label2 = new JLabel("Nom du deuxième channel :");
-        label2.setBounds(getWidth() / 2 - 200, 200, 190, 50);
+        JLabel label2 = new JLabel("Nom du channel de réception :");
+        label2.setBounds(getWidth() / 2 - 220, 200, 210, 50);
         label2.setFont(new Font("arial", Font.PLAIN, 14));
-        channel1.setBounds(getWidth() / 2 , 130, 220, 50);
+        channel1.setBounds(getWidth() / 2 , 130, 240, 50);
         channel1.setEditable(true);
-        channel2.setBounds(getWidth() / 2 , 200, 220, 50);
+        channel2.setBounds(getWidth() / 2 , 200, 240, 50);
         channel2.setEditable(true);
         this.add(label1);
         this.add(label2);
@@ -137,12 +137,19 @@ public class TournoiPanel extends JPanel implements ActionListener {
      * Effectue l'action voulue en fonction du bouton pressé
      * @param e the event to be processed
      */
-    // TODO: Prendre en compte les actions de difficulté et de joueur
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == buttonPlay) {
-            System.out.println(channel1.getText());
-            System.out.println(channel2.getText());
+            if (level1.isSelected()) {
+                if (blue.isSelected()) client.gameTournament(channel1.getText(), channel2.getText(), 1, -1, board);
+                else client.gameTournament(channel1.getText(), channel2.getText(), 1, 1, board);
+            } else if (level2.isSelected()) {
+                if (blue.isSelected()) client.gameTournament(channel1.getText(), channel2.getText(), 2, -1, board);
+                else client.gameTournament(channel1.getText(), channel2.getText(), 2, 1, board);
+            } else {
+                if (blue.isSelected()) client.gameTournament(channel1.getText(), channel2.getText(), 3, -1, board);
+                else client.gameTournament(channel1.getText(), channel2.getText(), 3, 1, board);
+            }
         }
         else client.menu(board);
     }

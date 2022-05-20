@@ -11,6 +11,7 @@ public class Board {
     public int numberOfMoves; // Nombre de mouvements faits
     public Cell[][] cellBoard = new Cell[SIZE][SIZE]; // Plateau rempli de cellules
     public Cell lastMove;
+    public Cell lastMoveTournament;
 
 
     /**
@@ -52,6 +53,7 @@ public class Board {
             board[cell.r()][cell.c()] = cell.player();
             cellBoard[cell.r()][cell.c()] = cell;
             lastMove = cell;
+            lastMoveTournament = cell;
         }
     }
 
@@ -65,6 +67,8 @@ public class Board {
         int dif = lastMove.r() + lastMove.c() - 10;
         board[lastMove.r() - dif][lastMove.c() - dif] = 1;
         cellBoard[lastMove.r() - dif][lastMove.c() - dif] = new Cell(lastMove.r() - dif, lastMove.c() - dif, 1);
+        lastMove = new Cell(lastMove.r() - dif, lastMove.c() - dif, 1);
+        lastMoveTournament = new Cell(-1, -1, 1);
     }
 
     /**

@@ -4,6 +4,7 @@ import hexgame.Board;
 import hexgame.Cell;
 import hexgame.ai.AiObject;
 import hexgame.ai.AiRandom;
+import hexgame.network.Channel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,9 +18,13 @@ import java.util.ArrayList;
  * Définie la fenêtre
  */
 public class GamePanel extends JPanel {
-    public boolean isAi;
-    public int aiLevel = 0;
-    public int aiPlayer = 0;
+    private final boolean isAi;
+    private final boolean tournament;
+    private Channel channel1 = null;
+    private Channel channel2 = null;
+    private Cell lastReceived = null;
+    private int aiLevel = 0;
+    private int aiPlayer = 0;
     private AiRandom aiRandom = null;
     private AiObject ai = null;
     private boolean smart = false;
@@ -36,7 +41,8 @@ public class GamePanel extends JPanel {
      */
     public GamePanel(Client client, Board board) {
         super();
-        isAi = false;
+        this.isAi = false;
+        this.tournament = false;
         this.board = board;
         this.client = client;
         setLayout(null);
@@ -54,7 +60,8 @@ public class GamePanel extends JPanel {
      */
     public GamePanel(Client client, Board board, int aiPlayer, int aiLevel) {
         super();
-        isAi = true;
+        this.isAi = true;
+        this.tournament = false;
         this.board = board;
         this.client = client;
         this.aiRandom = new AiRandom(board, aiPlayer);
@@ -65,7 +72,7 @@ public class GamePanel extends JPanel {
         setOpaque(true);
         MouseListener ml = new MouseListener();
         addMouseListener(ml);
-        if (aiPlayer == -1)  {
+        if (this.aiPlayer == -1)  {
             if (aiLevel < 3) {
                 board.move(aiRandom.getBestMove());
                 if (aiLevel == 2) {
@@ -77,6 +84,34 @@ public class GamePanel extends JPanel {
                 board.move(move);
             }
         }
+    }
+
+    /**
+     * Le constructeur du Panel pour une partie en mode tournoi
+     * @param client le client
+     * @param board le plateau de jeu
+     * @param aiPlayer le camp de l'IA
+     * @param aiLevel le niveau de l'IA
+     * @param channel1 le channel 1
+     * @param channel2 le channel 2
+     */
+    public GamePanel(Client client, Board board, int aiPlayer, int aiLevel, Channel channel1, Channel channel2) {
+        super();
+        this.isAi = true;
+        this.tournament = true;
+        this.board = board;
+        this.client = client;
+        this.aiRandom = new AiRandom(board, aiPlayer);
+        this.ai = new AiObject(board, aiPlayer);
+        this.aiPlayer = aiPlayer;
+        this.aiLevel = aiLevel;
+        this.channel1 = channel1;
+        this.channel2 = channel2;
+        this.lastReceived = null;
+        setLayout(null);
+        setOpaque(true);
+        this.channel1.connect();
+        this.channel2.connect();
     }
 
     /**
@@ -93,6 +128,7 @@ public class GamePanel extends JPanel {
 
     /**
      * Permet d'afficher et de dessiner le plateau
+     * Permet aussi d'envoyer/recevoir et jouer dans le mode tournoi
      * @param g the <code>Graphics</code> object to protect
      */
     public void paintComponent(Graphics g) {
@@ -107,11 +143,50 @@ public class GamePanel extends JPanel {
                 paint((Graphics2D) g, coordinate[0], coordinate[1], colors[color]);
             }
         }
-        if (board.numberOfMoves == 1) {
-            swap(g);
-        } else if (board.numberOfMoves == 2) {
-            rmSwap();
+        if (!tournament) {
+            if (board.numberOfMoves == 1) {
+                swap(g);
+            } else if (board.numberOfMoves == 2) {
+                rmSwap();
+            }
         }
+        if (tournament) tournamentPlay();
+    }
+
+    /**
+     * Permet d'envoyer/recevoir et jouer en mode tournoi
+     */
+    private void tournamentPlay() {
+        if (board.numberOfMoves % 2 == 0 && aiPlayer == 1) {
+            aiMove();
+            if (board.lastMoveTournament.c() == -1 && board.lastMoveTournament.r() == -1) channel1.send("SWAP");
+            else channel1.send(board.lastMoveTournament.c() + " " + board.lastMoveTournament.r());
+        } else if (board.numberOfMoves % 2 != 0 && aiPlayer == -1) {
+            aiMove();
+            if (board.lastMoveTournament.c() == -1 && board.lastMoveTournament.r() == -1) channel1.send("SWAP");
+            else channel1.send(board.lastMoveTournament.c() + " " + board.lastMoveTournament.r());
+        } else {
+            Cell move;
+            String mes = this.channel2.getNext();
+            String[] mesSplit = mes.split(" ");
+            while (mesSplit.length < 2 && lastReceived == null && !mes.equals("SWAP") ||
+                    lastReceived != null && Integer.parseInt(mesSplit[1]) == lastReceived.r() && Integer.parseInt(mesSplit[0]) == lastReceived.c()) {
+                mes = this.channel2.getNext();
+                mesSplit = mes.split(" ");
+            }
+            if (mes.equals("SWAP")) {
+                move = new Cell(-1, -1, this.aiPlayer == 1 ? -1 : 1);
+                board.swap();
+            } else {
+                move = new Cell(Integer.parseInt(mesSplit[1]), Integer.parseInt(mesSplit[0]), this.aiPlayer == 1 ? -1 : 1);
+                board.move(move);
+            }
+            lastReceived = move;
+        }
+        if (board.win() != 0) {
+            client.gameEnd(board.win(), new Board());
+        }
+        repaint();
     }
 
     /**
@@ -252,6 +327,33 @@ public class GamePanel extends JPanel {
     }
 
     /**
+     * Effectue le coup de l'IA en fonction de son niveau
+     */
+    private void aiMove() {
+        if (aiLevel == 1) {
+            Cell move = aiRandom.getBestMove();
+            if (move.c() == -1 && move.r() == -1) board.swap();
+            else board.move(aiRandom.getBestMove());
+        } else if (aiLevel == 2) {
+            Cell move;
+            if (smart) move = ai.getMove();
+            else move = aiRandom.getBestMove();
+            if (move.r() == -1 && move.c() == -1) board.swap();
+            else board.move(move);
+            smart = !smart;
+        } else {
+            Cell move = ai.getMove();
+            if (move.r() == -1 && move.c() == -1) board.swap();
+            else {
+                while (board.board[move.r()][move.c()] != 0) move = ai.getMove();
+                board.move(move);
+            }
+            System.out.println(move);
+
+        }
+    }
+
+    /**
      * Prise en charge de la souris
      */
     public class MouseListener extends MouseAdapter {
@@ -260,40 +362,22 @@ public class GamePanel extends JPanel {
          * @param e the event to be processed
          */
         public void mouseClicked(MouseEvent e) {
-            Cell hex = pxToHex(e.getX(), e.getY());
-            if (hex != null) {
-                if (hex.r() == -1 && hex.c() == -1) {
-                    board.swap();
-                    if (isAi) aiMove();
-                } else if (board.board[hex.r()][hex.c()] == 0) {
-                    board.move(hex);
-                    if (isAi) aiMove();
+            if (!tournament) {
+                Cell hex = pxToHex(e.getX(), e.getY());
+                if (hex != null) {
+                    if (hex.r() == -1 && hex.c() == -1) {
+                        board.swap();
+                        if (isAi) aiMove();
+                    } else if (board.board[hex.r()][hex.c()] == 0) {
+                        board.move(hex);
+                        if (isAi) aiMove();
 
-                    if (board.win() != 0) {
-                        client.gameEnd(board.win(), new Board());
+                        if (board.win() != 0) {
+                            client.gameEnd(board.win(), new Board());
+                        }
                     }
                 }
-            }
-            repaint();
-        }
-
-        private void aiMove() {
-            if (aiLevel == 1) {
-                Cell move = aiRandom.getBestMove();
-                if (move.c() == -1 && move.r() == -1) board.swap();
-                else board.move(aiRandom.getBestMove());
-            } else if (aiLevel == 2) {
-                Cell move;
-                if (smart) move = ai.getMove();
-                else move = aiRandom.getBestMove();
-                System.out.println(move);
-                if (move.r() == -1 && move.c() == -1) board.swap();
-                else board.move(move);
-            } else {
-                Cell move = ai.getMove();
-                System.out.println(move);
-                if (move.r() == -1 && move.c() == -1) board.swap();
-                else board.move(move);
+                repaint();
             }
         }
     }

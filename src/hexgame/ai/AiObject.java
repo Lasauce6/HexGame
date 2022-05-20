@@ -33,8 +33,6 @@ public class AiObject {
         lookUpTable = new HashMap<>();
     }
 
-    // TODO: FAUT QUE CA MARCHE OOOOOOOOOOOOOOOOO
-
     public Cell getMove() {
         int numberOfMoves = board.numberOfMoves;
         if (numberOfMoves == 0) {
@@ -43,16 +41,16 @@ public class AiObject {
         } else if (numberOfMoves == 1) {
             return new Cell(-1, -1, aiPlayer);
         } else {
-            Cell lastMove = board.lastMove;
+            Cell lastMove = new Cell(SIZE - 1 - board.lastMove.c(), board.lastMove.r(), board.lastMove.player());
             boardCopy[lastMove.r() + 1][lastMove.c() + 1] = lastMove.player();
             Cell bestMove = getBestMove();
-            boardCopy[bestMove.r() + 1][bestMove.c() + 1] = aiPlayer;
-            return new Cell(bestMove.r() - 1, bestMove.c() - 1, aiPlayer);
+            boardCopy[bestMove.r()][bestMove.c()] = aiPlayer;
+            return new Cell(bestMove.c() - 1, SIZE - 1 - bestMove.r() - 1, aiPlayer);
         }
     }
 
     private Cell getBestMove() {
-        int besValue = aiPlayer == BLUE ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+        int bestValue = aiPlayer == RED ? Integer.MIN_VALUE : Integer.MAX_VALUE;
         int bestRow = -1;
         int bestColumn = -1;
 
@@ -63,16 +61,16 @@ public class AiObject {
 
                 // Trouve une évaluation du coup avec un arbre
                 boardCopy[i][j] = aiPlayer;
-                int value = expand(1, besValue, aiPlayer == RED ? BLUE : RED);
+                int value = expand(1, bestValue, aiPlayer == RED ? BLUE : RED);
                 boardCopy[i][j] = EMPTY;
 
                 // Compare le dernier coup au meilleur coup et prends le meilleur des deux
-                if (aiPlayer == BLUE && value > besValue) {
-                    besValue = value;
+                if (aiPlayer == RED && value > bestValue) {
+                    bestValue = value;
                     bestRow = i;
                     bestColumn = j;
-                } else if (aiPlayer == RED && value < besValue) {
-                    besValue = value;
+                } else if (aiPlayer == BLUE && value < bestValue) {
+                    bestValue = value;
                     bestRow = i;
                     bestColumn = j;
                 }
@@ -86,13 +84,10 @@ public class AiObject {
         // si la profondeur est le maximum
         int MAX_DEPTH = 2;
         if (depth == MAX_DEPTH) return evaluate();
-        int bestValue = currentColor == BLUE ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+        int bestValue = currentColor == RED ? Integer.MIN_VALUE : Integer.MAX_VALUE;
 
         // Prend tous les coups possibles à faire
         Iterator<Cell> iterator = getMoves().iterator();
-        while (iterator.hasNext()) {
-            System.out.println(iterator.next());
-        }
 
         int BEAM_SIZE = 5;
         for (int i = 0; i < BEAM_SIZE && iterator.hasNext(); i++) {
@@ -102,12 +97,12 @@ public class AiObject {
             boardCopy[nexMove.r()][nexMove.c()] = EMPTY;
 
             // Compare le dernier coup avec le meilleur coup
-            if (currentColor == BLUE && value > bestValue) bestValue = value;
-            else if (currentColor == RED && value < bestValue) bestValue = value;
+            if (currentColor == RED && value > bestValue) bestValue = value;
+            else if (currentColor == BLUE && value < bestValue) bestValue = value;
 
             // Si le coup actuel fait toute la branche alors on stoppe
-            if (currentColor == BLUE && bestValue > previousBest ||
-                    currentColor == RED && bestValue < previousBest)
+            if (currentColor == RED && bestValue > previousBest ||
+                    currentColor == BLUE && bestValue < previousBest)
                 return bestValue;
         }
 
