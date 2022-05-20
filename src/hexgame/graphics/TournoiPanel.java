@@ -23,6 +23,11 @@ public class TournoiPanel extends JPanel implements ActionListener {
     private final JButton buttonPlay = new JButton();
     private final JButton buttonReturn = new JButton();
 
+    /**
+     * Le constructeur du panel
+     * @param client le client
+     * @param board le plateau de jeu
+     */
     public TournoiPanel(Client client, Board board) {
         super();
         this.client = client;
@@ -34,7 +39,7 @@ public class TournoiPanel extends JPanel implements ActionListener {
     }
 
     /**
-     * Affiche le menu Online
+     * Affiche le menu du Tournoi
      * @param g the <code>Graphics</code> object to protect
      */
     public void paintComponent(Graphics g) {
@@ -58,6 +63,9 @@ public class TournoiPanel extends JPanel implements ActionListener {
         g.drawString(title, getWidth() / 2 - 95, 100);
     }
 
+    /**
+     * Affiche les différents champs pour les channels
+     */
     private void setChannels() {
         JLabel label1 = new JLabel("Nom du channel d'envoi :");
         label1.setBounds(getWidth() / 2 - 220, 130, 210, 50);
@@ -75,6 +83,9 @@ public class TournoiPanel extends JPanel implements ActionListener {
         this.add(channel2);
     }
 
+    /**
+     * Affiche le choix de difficulté
+     */
     private void setDifficulty() {
         JLabel diff = new JLabel("Niveau de difficulté :");
         diff.setBounds(getWidth() / 2 - 200, 270, 190, 50);
@@ -96,6 +107,9 @@ public class TournoiPanel extends JPanel implements ActionListener {
         this.add(diff);
     }
 
+    /**
+     * Affiche le choix de joueur
+     */
     private void setPlayer() {
         JLabel player = new JLabel("Couleur du joueur :");
         player.setBounds(getWidth() / 2 - 200, 330, 190, 50);

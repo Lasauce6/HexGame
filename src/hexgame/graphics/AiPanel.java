@@ -6,8 +6,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
+/**
+ * Le menu de l'IA
+ */
 public class AiPanel extends JPanel implements ActionListener {
     private final Client client;
     private final Board board;
@@ -18,6 +20,11 @@ public class AiPanel extends JPanel implements ActionListener {
     private final JRadioButton blue = new JRadioButton("Bleu");
     private final JButton buttonReturn = new JButton();
 
+    /**
+     * Le constructeur du panel
+     * @param client le client
+     * @param board le plateau de jeu
+     */
     public AiPanel(Client client, Board board) {
         super();
         this.client = client;
@@ -30,6 +37,10 @@ public class AiPanel extends JPanel implements ActionListener {
         buttonReturn.addActionListener(this);
     }
 
+    /**
+     * Affiche le panel
+     * @param g the <code>Graphics</code> object to protect
+     */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setColor(Color.BLACK);
@@ -41,12 +52,19 @@ public class AiPanel extends JPanel implements ActionListener {
         setButtonReturn();
     }
 
+    /**
+     * Affiche le titre
+     * @param g the <code>Graphics</code> object to protect
+     */
     private void setTitle(Graphics g) {
         String title = "Choix de la difficulté";
         g.setFont(new Font("arial", Font.BOLD, 50));
         g.drawString(title, getWidth() / 2 - 265, 100);
     }
 
+    /**
+     * Affiche le bouton Difficulté 1
+     */
     private void setButton1() {
         button1.setBounds(getWidth() / 2 - 140, 150, 300, 100);
         button1.setFont(new Font("arial", Font.PLAIN, 24));
@@ -54,6 +72,9 @@ public class AiPanel extends JPanel implements ActionListener {
         this.add(button1);
     }
 
+    /**
+     * Affiche le bouton Difficulté 2
+     */
     private void setButton2() {
         button2.setBounds(getWidth() / 2 - 140, 275, 300, 100);
         button2.setFont(new Font("arial", Font.PLAIN, 24));
@@ -61,6 +82,9 @@ public class AiPanel extends JPanel implements ActionListener {
         this.add(button2);
     }
 
+    /**
+     * Affiche le bouton Difficulté 3
+     */
     private void setButton3() {
         button3.setBounds(getWidth() / 2 - 140, 400, 300, 100);
         button3.setFont(new Font("arial", Font.PLAIN, 24));
@@ -68,6 +92,10 @@ public class AiPanel extends JPanel implements ActionListener {
         this.add(button3);
     }
 
+    /**
+     * Affiche le choix de joueur
+     * @param g the <code>Graphics</code> object to protect
+     */
     private void setPlayer(Graphics g) {
         String title = "Choix du joueur";
         g.setFont(new Font("arial", Font.PLAIN, 30));
@@ -84,6 +112,9 @@ public class AiPanel extends JPanel implements ActionListener {
         this.add(blue);
     }
 
+    /**
+     * Affiche le bouton Retour
+     */
     private void setButtonReturn() {
         buttonReturn.setBounds(0, 0, 100, 100);
         buttonReturn.setFont(new Font("arial", Font.PLAIN, 15));
@@ -91,6 +122,10 @@ public class AiPanel extends JPanel implements ActionListener {
         this.add(buttonReturn);
     }
 
+    /**
+     * Effectue l'action voulue en fonction du bouton pressé
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == button1) {

@@ -32,6 +32,10 @@ public class EndPanel extends JPanel implements ActionListener {
         buttonQuit.addActionListener(this);
     }
 
+    /**
+     * Affiche le menu de fin
+     * @param g the <code>Graphics</code> object to protect
+     */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setFont(font);
@@ -41,6 +45,10 @@ public class EndPanel extends JPanel implements ActionListener {
         setButtonQuit();
     }
 
+    /**
+     * Affiche le titre/qui a gagné
+     * @param g the <code>Graphics</code> object to protect
+     */
     private void setTitle(Graphics g) {
         String title;
         if (player == 1) title = "Le joueur rouge a gagné !!!";
@@ -48,6 +56,9 @@ public class EndPanel extends JPanel implements ActionListener {
         g.drawString(title, getWidth() / 2 - 325, 100);
     }
 
+    /**
+     * Affiche le bouton Nouvelle Partie
+     */
     private void setButtonNewGame() {
         buttonNewGame.setBounds(getWidth() / 2 - 140, 150, 300, 100);
         buttonNewGame.setFont(new Font("arial", Font.PLAIN, 24));
@@ -55,6 +66,9 @@ public class EndPanel extends JPanel implements ActionListener {
         this.add(buttonNewGame);
     }
 
+    /**
+     * Affiche le bouton Quitter
+     */
     private void setButtonQuit() {
         buttonQuit.setBounds(getWidth() / 2 - 140, 275, 300, 100);
         buttonQuit.setFont(new Font("arial", Font.PLAIN, 24));
@@ -62,6 +76,10 @@ public class EndPanel extends JPanel implements ActionListener {
         this.add(buttonQuit);
     }
 
+    /**
+     * Effectue l'action voulue en fonction du bouton pressé
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == buttonNewGame) client.menu(board);

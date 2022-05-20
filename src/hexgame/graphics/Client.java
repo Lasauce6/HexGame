@@ -13,6 +13,9 @@ import java.awt.event.WindowEvent;
 public class Client {
     private final JFrame frame = new JFrame("HexGame"); // La fenêtre de jeu
 
+    /**
+     * Le constructeur du Client
+     */
     public Client() {
         frame.setLayout(null);
         frame.setResizable(false);

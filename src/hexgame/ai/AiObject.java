@@ -6,14 +6,17 @@ import hexgame.Cell;
 import java.math.BigInteger;
 import java.util.*;
 
+/**
+ * Représente un joueur IA
+ */
 public class AiObject {
     private final int RED = 1, BLUE = -1, EMPTY = 0;
     private final int SIZE = 11;
     private final Board board;
-    private final int[][] boardCopy;
+    private final int[][] boardCopy; // Une copie du plateau pour faire des évaluations
     private final int aiPlayer;
-    private final HashMap<BigInteger, Integer> lookUpTable;
-    private EvaluationNode[][] nodes;
+    private final HashMap<BigInteger, Integer> lookUpTable; // Une hashmap pour avoir les valeurs de toutes les cases
+    private EvaluationNode[][] nodes; // Une autre copie du tableau pour faire des évaluations
 
     public AiObject(Board board, int player) {
         this.board = board;
@@ -33,6 +36,10 @@ public class AiObject {
         lookUpTable = new HashMap<>();
     }
 
+    /**
+     * Renvoi le coup pour jouer l'IA
+     * @return le meilleur coup
+     */
     public Cell getMove() {
         int numberOfMoves = board.numberOfMoves;
         if (numberOfMoves == 0) {
@@ -49,6 +56,10 @@ public class AiObject {
         }
     }
 
+    /**
+     * Trouve le meilleur coup possible
+     * @return une cellule représentant le meilleur coup
+     */
     private Cell getBestMove() {
         int bestValue = aiPlayer == RED ? Integer.MIN_VALUE : Integer.MAX_VALUE;
         int bestRow = -1;
@@ -79,6 +90,13 @@ public class AiObject {
         return new Cell(bestRow, bestColumn, aiPlayer);
     }
 
+    /**
+     * On a créé un arbre pour évaluer les coups
+     * @param depth la profondeur de l'arbre
+     * @param previousBest l'ancien meilleure valeur
+     * @param currentColor la couleur du joueur
+     * @return la valeur du meilleur coup
+     */
     private int expand(int depth, int previousBest, int currentColor) {
         // On évalue la branche avec une evaluation de plateau au lieu de l'agrandir
         // si la profondeur est le maximum
@@ -111,6 +129,13 @@ public class AiObject {
         return bestValue;
     }
 
+    /**
+     * Remplie les différents tableaux représentants chacun un plateau
+     * @param redA le plateau rouge A
+     * @param redB le plateau rouge B
+     * @param blueA le plateau bleu A
+     * @param blueB le plateau bleu B
+     */
     private void calculateAB(int[][] redA, int[][] redB, int[][] blueA, int[][] blueB) {
         boolean found = true;
         while (found) {
@@ -149,8 +174,16 @@ public class AiObject {
         }
     }
 
-    private boolean isFound(int[][] blueB, boolean found, int i, int j) {
-        if (blueB[i][j] != 100000)
+    /**
+     * Sous fonction de calculateAB
+     * @param board le plateau
+     * @param found booléen si on a trouvé mieux
+     * @param i valeur de i dans la boucle
+     * @param j valeur de j dans la boucle
+     * @return true si on a trouvé mieux false sinon
+     */
+    private boolean isFound(int[][] board, boolean found, int i, int j) {
+        if (board[i][j] != 100000)
             return found;
         if (boardCopy[i][j] != 0)
             return found;
@@ -159,7 +192,7 @@ public class AiObject {
         int secondMin = 100000;
 
         for (EvaluationNode next : nodes[i][j].blueNeighbours) {
-            int number = blueB[next.row][next.column];
+            int number = board[next.row][next.column];
             if (number < secondMin) {
                 secondMin = number;
                 if (number < min) {
@@ -169,17 +202,24 @@ public class AiObject {
             }
         }
         if (secondMin < 100) {
-            if (blueB[i][j] != secondMin + 1) {
+            if (board[i][j] != secondMin + 1) {
                 found = true;
-                blueB[i][j] = secondMin + 1;
+                board[i][j] = secondMin + 1;
             }
         }
         return found;
     }
 
-    private boolean isFound(int[][] redA, boolean found, int j) {
-        for (int i = 1; i < redA.length - 1; i++) {
-            if (redA[i][j] != 100000)
+    /**
+     * Sous fonction de calculateAB
+     * @param board le plateau
+     * @param found booléen si on a trouvé mieux
+     * @param j valeur de j dans la boucle
+     * @return true si on a trouvé mieux false sinon
+     */
+    private boolean isFound(int[][] board, boolean found, int j) {
+        for (int i = 1; i < board.length - 1; i++) {
+            if (board[i][j] != 100000)
                 continue;
             if (boardCopy[i][j] != 0)
                 continue;
@@ -188,7 +228,7 @@ public class AiObject {
             int secondMin = 100000;
 
             for (EvaluationNode next : nodes[i][j].redNeighbours) {
-                int number = redA[next.row][next.column];
+                int number = board[next.row][next.column];
                 if (number < secondMin) {
                     secondMin = number;
                     if (number < min) {
@@ -198,15 +238,19 @@ public class AiObject {
                 }
             }
             if (secondMin < 100) {
-                if (redA[i][j] != secondMin + 1) {
+                if (board[i][j] != secondMin + 1) {
                     found = true;
-                    redA[i][j] = secondMin + 1;
+                    board[i][j] = secondMin + 1;
                 }
             }
         }
         return found;
     }
 
+    /**
+     * Donne une liste des coups
+     * @return la liste des coups
+     */
     @SuppressWarnings("unchecked")
     private ArrayList<Cell> getMoves() {
         nodes = new EvaluationNode[boardCopy.length][boardCopy.length];
