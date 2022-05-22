@@ -1,6 +1,7 @@
 package hexgame;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Défini le plateau de jeu
@@ -27,6 +28,23 @@ public class Board {
                 cellBoard[r][c] = new Cell(r, c);
             }
         }
+    }
+
+    /**
+     * Créé une copie d'un plateau déjà existant
+     * @param board le plateau à copier
+     */
+    public Board(Board board) {
+        this.board = new int[SIZE][SIZE];
+        for (int i = 0; i < SIZE; i++) {
+            System.arraycopy(board.board[i], 0, this.board[i], 0, SIZE);
+        }
+        this.numberOfMoves = board.numberOfMoves;
+        for (int i = 0; i < SIZE; i++) {
+            System.arraycopy(board.cellBoard[i], 0, this.cellBoard[i], 0, SIZE);
+        }
+        this.lastMove = board.lastMove;
+        this.lastMoveTournament = board.lastMoveTournament;
     }
 
     /**
@@ -72,7 +90,7 @@ public class Board {
     }
 
     /**
-     * Donne une liste de cellules adjacentes a la cellule indiquée
+     * Donne une liste de cellules adjacentes à la cellule indiquée
      * @param cell la cellule initiale
      * @return la liste des cellules adjacentes
      */
@@ -84,6 +102,24 @@ public class Board {
         if (cell.r() + 1 < 11) result.add(cellBoard[cell.r() + 1][cell.c()]);
         if (cell.c() + 1 < 11) result.add(cellBoard[cell.r()][cell.c() + 1]);
         if (cell.r() + 1 < 11 && cell.c() + 1 < 11) result.add(cellBoard[cell.r() + 1][cell.c() + 1]);
+
+        return result;
+    }
+
+    /**
+     * Donne une liste de cellules adjacentes à la cellule indiquée qui correspond au joueur indiqué
+     * @param cell la cellule initiale
+     * @param player le joueur
+     * @return la liste des cellules adjacentes
+     */
+    public List<Cell> getAdjacentsPlayer(Cell cell, int player) {
+        List<Cell> result = new ArrayList<>();
+        if (cell.r() - 1 >= 0 && cellBoard[cell.r() - 1][cell.c()].player() == player) result.add(cellBoard[cell.r() - 1][cell.c()]);
+        if (cell.c() - 1 >= 0 && cellBoard[cell.r()][cell.c() - 1].player() == player) result.add(cellBoard[cell.r()][cell.c() - 1]);
+        if (cell.r() - 1 >= 0 && cell.c() - 1 >= 0 && cellBoard[cell.r() - 1][cell.c() - 1].player() == player) result.add(cellBoard[cell.r() - 1][cell.c() - 1]);
+        if (cell.r() + 1 < 11 && cellBoard[cell.r() + 1][cell.c()].player() == player) result.add(cellBoard[cell.r() + 1][cell.c()]);
+        if (cell.c() + 1 < 11 && cellBoard[cell.r()][cell.c() + 1].player() == player) result.add(cellBoard[cell.r()][cell.c() + 1]);
+        if (cell.r() + 1 < 11 && cell.c() + 1 < 11 && cellBoard[cell.r() + 1][cell.c() + 1].player() == player) result.add(cellBoard[cell.r() + 1][cell.c() + 1]);
 
         return result;
     }
