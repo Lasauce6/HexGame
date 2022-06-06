@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Affiche le menu en Online
+ * Affiche le menu du tournoi
  */
 public class TournoiPanel extends JPanel implements ActionListener {
     private final Client client;

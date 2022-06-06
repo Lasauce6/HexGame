@@ -100,23 +100,4 @@ public class Channel {
             e.printStackTrace();
         }
     }
-
-    /**
-    public static void test() {
-        Channel c = new Channel("PippoTest");
-        c.connect();
-        long time=new Date().getTime();
-        //System.out.println(time);
-        c.send(Objects.toString(time));
-        c.send("TestJavaObjectToto" + time);
-        boolean flag=false;
-        long l1=0;
-        for(;;) {
-            String s= c.getNext();
-            try {l1 = Long.parseLong(s);} catch (NumberFormatException e) {}
-            if (l1==time) flag=true;
-            if(flag) System.out.println(s);
-        }
-    }
-    */
 }

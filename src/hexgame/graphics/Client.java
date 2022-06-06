@@ -19,7 +19,7 @@ public class Client {
     public Client() {
         frame.setLayout(null);
         frame.setResizable(false);
-        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(1155, 730));
         frame.pack();
         frame.setVisible(true);
@@ -37,7 +37,7 @@ public class Client {
     }
 
     /**
-     * Affiche le menu en ligne
+     * Affiche le menu du tournoi
      * @param board le plateau de jeu
      */
     public void menuTournoi(Board board) {
@@ -48,7 +48,7 @@ public class Client {
     }
 
     /**
-     * Affiche le menu de l'AI
+     * Affiche le menu de l'IA
      * @param board le plateau de jeu
      */
     public void menuAi(Board board) {
@@ -70,7 +70,7 @@ public class Client {
     }
 
     /**
-     * Démarre une partie contre l'ia
+     * Démarre une partie contre l'IA
      * @param diff la difficulté de l'IA
      * @param aiPlayer le joueur de l'IA
      * @param board le plateau de jeu
