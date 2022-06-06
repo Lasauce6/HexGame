@@ -2,6 +2,7 @@ package hexgame.ai;
 
 import hexgame.Board;
 import hexgame.Cell;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -22,14 +23,12 @@ public class AiObject {
         Cell move;
         Cell lastReceived = board.lastMoveTournament;
         if (board.numberOfMoves < 2) {
-            if (aiPlayer == -1) move = new Cell(5, 0, aiPlayer);
-            else move = new Cell(0, 5, aiPlayer);
+            move = getBeginningCell();
             lastPlayed = move;
             played.add(lastPlayed);
             return move;
         } else if (board.numberOfMoves == 2 && lastReceived.r() == -1 && lastReceived.c() == -1) {
-            if (aiPlayer == -1) move = new Cell(5, 0, aiPlayer);
-            else move = new Cell(0, 5, aiPlayer);
+            move = getBeginningCell();
             played.remove(lastPlayed);
             lastPlayed = move;
             played.add(lastPlayed);
@@ -52,6 +51,14 @@ public class AiObject {
             }
         }
         return getCellRdm();
+    }
+    private Cell getBeginningCell() {
+        Cell move;
+        if (aiPlayer == -1 && board.board[5][0] == 0) move = new Cell(5, 0, aiPlayer);
+        else if (aiPlayer == 1 && board.board[0][5] == 0) move = new Cell(0, 5, aiPlayer);
+        else if (aiPlayer == -1) move = new Cell(6, 0, aiPlayer);
+        else move = new Cell(0, 6, aiPlayer);
+        return move;
     }
 
     private Cell getMostValuedMove(Cell c) {
