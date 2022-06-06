@@ -2,7 +2,6 @@ package hexgame.ai;
 
 import hexgame.Board;
 import hexgame.Cell;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Random;
