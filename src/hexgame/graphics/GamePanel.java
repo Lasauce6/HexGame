@@ -155,11 +155,11 @@ public class GamePanel extends JPanel {
      * Permet d'envoyer/recevoir et jouer en mode tournoi
      */
     private void tournamentPlay() {
-        if (board.numberOfMoves % 2 == 0 && aiPlayer == 1) {
+        if (board.numberOfMoves % 2 == 0 && aiPlayer == -1) {
             aiMove();
             if (board.lastMoveTournament.c() == -1 && board.lastMoveTournament.r() == -1) channel1.send("SWAP");
             else channel1.send(board.lastMoveTournament.c() + " " + board.lastMoveTournament.r());
-        } else if (board.numberOfMoves % 2 != 0 && aiPlayer == -1) {
+        } else if (board.numberOfMoves % 2 != 0 && aiPlayer == 1) {
             aiMove();
             if (board.lastMoveTournament.c() == -1 && board.lastMoveTournament.r() == -1) channel1.send("SWAP");
             else channel1.send(board.lastMoveTournament.c() + " " + board.lastMoveTournament.r());
