@@ -2,7 +2,7 @@ package hexgame.graphics;
 
 import hexgame.Board;
 import hexgame.Cell;
-import hexgame.ai.AiObject;
+import hexgame.ai.AiPlayer;
 import hexgame.ai.AiRandom;
 import hexgame.network.Channel;
 
@@ -27,7 +27,7 @@ public class GamePanel extends JPanel {
     private int aiLevel = 0;
     private int aiPlayer = 0;
     private AiRandom aiRandom = null;
-    private AiObject ai = null;
+    private AiPlayer ai = null;
     private final static int SIZE = 40; // La taille initiale de la fenêtre
     private final static int GAP = 10;
     private final Board board; // Le plateau
@@ -65,7 +65,7 @@ public class GamePanel extends JPanel {
         this.board = board;
         this.client = client;
         this.aiRandom = new AiRandom(board, aiPlayer);
-        this.ai = new AiObject(board, aiPlayer);
+        this.ai = new AiPlayer(board, aiPlayer);
         this.aiPlayer = aiPlayer;
         this.aiLevel = aiLevel;
         this.smart = true;
@@ -99,7 +99,7 @@ public class GamePanel extends JPanel {
         this.board = board;
         this.client = client;
         this.aiRandom = new AiRandom(board, aiPlayer);
-        this.ai = new AiObject(board, aiPlayer);
+        this.ai = new AiPlayer(board, aiPlayer);
         this.aiPlayer = aiPlayer;
         this.aiLevel = aiLevel;
         this.channel1 = channel1;
